@@ -153,12 +153,12 @@ export default function LandingPage() {
         <section className="relative h-[85vh] min-h-[600px] w-full">
           <div className="absolute inset-0">
             <Image
-              src="https://picsum.photos/seed/hero-workout/1800/1200"
-              alt="Person working out"
+              src="https://picsum.photos/seed/new-hero-gym/1800/1200"
+              alt="People in a modern gym"
               fill
               className="object-cover brightness-50"
               priority
-              data-ai-hint="fitness workout"
+              data-ai-hint="gym fitness"
             />
           </div>
           <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white px-4">
@@ -325,5 +325,7 @@ export default function LandingPage() {
     </div>
   );
 }
+
+    
 
     
