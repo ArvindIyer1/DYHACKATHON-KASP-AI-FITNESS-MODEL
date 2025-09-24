@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
+import { Progress } from '@/components/ui/progress';
 
 export default function DashboardPage() {
   const [aiQuestion, setAiQuestion] = useState('');
@@ -57,7 +58,12 @@ export default function DashboardPage() {
           value="1,250"
           footer="Level 5"
           icon={Star}
-        />
+        >
+           <div className="mt-2 space-y-2">
+            <Progress value={(1250 % 1000) / 10} aria-label="Points progress to next level" />
+            <p className="text-xs text-muted-foreground">750 points to Level 6</p>
+          </div>
+        </DashboardCard>
       </div>
       <div className="grid gap-6">
         <DashboardCard
@@ -99,15 +105,18 @@ export default function DashboardPage() {
           icon={Award}
           className="lg:col-span-1"
         >
-          <div className="flex flex-wrap gap-2 mt-2">
-            <div className="bg-primary/10 text-primary-foreground text-xs font-semibold px-2 py-1 rounded">
-              First 5k
+          <div className="flex flex-wrap gap-3 mt-2">
+            <div className="flex items-center gap-2 bg-primary/10 text-primary-foreground text-sm font-semibold px-3 py-1.5 rounded-full border-2 border-primary/30">
+              <Star className="w-4 h-4 text-accent" fill="currentColor" />
+              <span>First 5k</span>
             </div>
-            <div className="bg-primary/10 text-primary-foreground text-xs font-semibold px-2 py-1 rounded">
-              30-Day Challenge
+            <div className="flex items-center gap-2 bg-primary/10 text-primary-foreground text-sm font-semibold px-3 py-1.5 rounded-full border-2 border-primary/30">
+              <Flame className="w-4 h-4 text-orange-400" fill="currentColor" />
+              <span>30-Day Challenge</span>
             </div>
-            <div className="bg-primary/10 text-primary-foreground text-xs font-semibold px-2 py-1 rounded">
-              Morning Lark
+            <div className="flex items-center gap-2 bg-primary/10 text-primary-foreground text-sm font-semibold px-3 py-1.5 rounded-full border-2 border-primary/30">
+               <Award className="w-4 h-4 text-blue-400" />
+               <span>Morning Lark</span>
             </div>
           </div>
         </DashboardCard>
