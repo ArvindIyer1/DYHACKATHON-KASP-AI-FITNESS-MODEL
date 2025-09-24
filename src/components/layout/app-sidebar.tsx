@@ -26,10 +26,12 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/dashboard/log', label: 'Log Activity', icon: PlusCircle },
   { href: '/dashboard/schedule', label: 'Schedule', icon: Calendar },
   { href: '/dashboard/doctors', label: 'Doctors', icon: Heart },
   { href: '/dashboard/feedback', label: 'Feedback', icon: PlusCircle },
   { href: '/dashboard/notifications', label: 'Notifications', icon: Bell },
+  { href: '/dashboard/profile', label: 'Profile', icon: UserIcon },
 ];
 
 export function AppSidebar() {
@@ -57,7 +59,7 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <SidebarHeader className="border-b-0">
         <div className="flex items-center justify-center gap-2 p-4">
             <AppLogo className="w-8 h-8 text-primary" />
