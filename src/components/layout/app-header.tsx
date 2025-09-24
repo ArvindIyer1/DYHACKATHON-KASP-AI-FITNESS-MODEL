@@ -47,9 +47,18 @@ export function AppHeader() {
           <Bell className="h-5 w-5" />
         </Button>
         <ThemeToggle />
-         <Button variant="ghost" size="icon">
-          <Globe className="h-5 w-5" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Globe className="h-5 w-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>English</DropdownMenuItem>
+            <DropdownMenuItem>Hindi</DropdownMenuItem>
+            <DropdownMenuItem>Marathi</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         {currentUser && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
