@@ -4,13 +4,15 @@ import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
 import { UserSelection } from '@/components/user-selection';
 import { UserProvider } from '@/context/user-context';
-import { Check, ChevronDown } from 'lucide-react';
+import { Check, ChevronDown, Globe } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
@@ -61,6 +63,20 @@ export default function LandingPage() {
           <NavLink href="#">About</NavLink>
         </nav>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Globe className="h-5 w-5" />
+                <span className="sr-only">Language</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>English</DropdownMenuItem>
+              <DropdownMenuItem>Español</DropdownMenuItem>
+              <DropdownMenuItem>Français</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button variant="ghost" asChild>
             <Link href="/dashboard">Login</Link>
           </Button>

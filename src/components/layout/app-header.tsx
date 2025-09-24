@@ -10,11 +10,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Globe, LogOut, User as UserIcon } from 'lucide-react';
+import { LogOut, User as UserIcon } from 'lucide-react';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/navigation';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { ThemeToggle } from '@/components/theme-toggle';
 
 export function AppHeader() {
   const { currentUser, setCurrentUserById } = useUser();
@@ -43,20 +42,6 @@ export function AppHeader() {
       </div>
      
       <div className="flex items-center gap-2">
-        <ThemeToggle />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Globe className="h-5 w-5" />
-              <span className="sr-only">Language</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>English</DropdownMenuItem>
-            <DropdownMenuItem>Español</DropdownMenuItem>
-            <DropdownMenuItem>Français</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
         {currentUser && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
