@@ -122,7 +122,7 @@ export default function LandingPage() {
               </DropdownMenuContent>
             </DropdownMenu>
             <Button asChild variant="ghost" className="hidden md:flex">
-                <Link href="#login">Log In</Link>
+                <Link href="/login">Log In</Link>
             </Button>
             <Button asChild className="hidden md:flex bg-primary hover:bg-primary/90 text-primary-foreground">
                 <Link href="/onboarding">Get Started</Link>
@@ -139,7 +139,7 @@ export default function LandingPage() {
                   <NavLink href="#features">Features</NavLink>
                   <NavLink href="#classes">Programs</NavLink>
                   <NavLink href="#about">About</NavLink>
-                   <NavLink href="#login">Log In</NavLink>
+                   <NavLink href="/login">Log In</NavLink>
                 </nav>
               </SheetContent>
             </Sheet>
@@ -257,20 +257,6 @@ export default function LandingPage() {
               </Accordion>
             </div>
           </div>
-        </section>
-
-         <section id="login" className="py-16 md:py-24 border-t">
-            <div className="container px-4 md:px-6 text-center">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Select Your Profile</h2>
-                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl mt-4">
-                    Or create a new one to begin your personalized fitness journey.
-                </p>
-                <div className="mt-8 flex justify-center">
-                  <UserProvider>
-                    <UserSelection />
-                  </UserProvider>
-                </div>
-            </div>
         </section>
       </main>
 
