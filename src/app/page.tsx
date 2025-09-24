@@ -153,7 +153,7 @@ export default function LandingPage() {
         <section className="relative h-[85vh] min-h-[600px] w-full">
           <div className="absolute inset-0">
             <Image
-              src="https://picsum.photos/seed/modern-gym/1800/1200"
+              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="People in a modern gym"
               fill
               className="object-cover brightness-50"
@@ -329,6 +329,7 @@ export default function LandingPage() {
     
 
     
+
 
 
 
