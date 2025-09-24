@@ -1,10 +1,11 @@
 
+
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
 import { UserProvider } from '@/context/user-context';
-import { Dumbbell, Utensils, HeartPulse, Menu, Globe, Instagram, Linkedin, Facebook } from 'lucide-react';
+import { Dumbbell, Utensils, HeartPulse, Menu, Globe, Instagram, Linkedin, Facebook, Twitter } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/theme-toggle';
 import {
@@ -14,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Input } from '@/components/ui/input';
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
@@ -262,10 +264,31 @@ export default function LandingPage() {
 
       <footer className="bg-secondary text-secondary-foreground border-t">
         <div className="container mx-auto px-4 md:px-6 py-12">
-          <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
-            <div>
-              <h3 className="font-bold text-lg font-headline mb-4">Synergy Life</h3>
-              <p className="text-sm text-muted-foreground">Your personalized, adaptive AI fitness coach for a healthier life.</p>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="lg:col-span-2">
+              <div className="flex items-center gap-3 mb-4">
+                <AppLogo className="h-8 w-8 text-primary" />
+                <span className="font-bold text-xl font-headline">Synergy Life</span>
+              </div>
+              <p className="text-sm text-muted-foreground max-w-xs">Your personalized, adaptive AI fitness coach for a healthier life.</p>
+               <div className="flex space-x-4 mt-6">
+                <Link href="#" className="text-muted-foreground hover:text-primary">
+                  <Instagram className="h-6 w-6" />
+                  <span className="sr-only">Instagram</span>
+                </Link>
+                <Link href="#" className="text-muted-foreground hover:text-primary">
+                  <Facebook className="h-6 w-6" />
+                  <span className="sr-only">Facebook</span>
+                </Link>
+                 <Link href="#" className="text-muted-foreground hover:text-primary">
+                  <Twitter className="h-6 w-6" />
+                  <span className="sr-only">Twitter</span>
+                </Link>
+                <Link href="#" className="text-muted-foreground hover:text-primary">
+                  <Linkedin className="h-6 w-6" />
+                  <span className="sr-only">LinkedIn</span>
+                </Link>
+              </div>
             </div>
             <div>
               <h3 className="font-bold text-lg font-headline mb-4">Quick Links</h3>
@@ -285,22 +308,13 @@ export default function LandingPage() {
                 <li><Link href="#" className="text-muted-foreground hover:text-primary">Terms of Service</Link></li>
               </ul>
             </div>
-            <div>
-              <h3 className="font-bold text-lg font-headline mb-4">Connect</h3>
-              <div className="flex space-x-4">
-                <Link href="#" className="text-muted-foreground hover:text-primary">
-                  <Instagram className="h-6 w-6" />
-                  <span className="sr-only">Instagram</span>
-                </Link>
-                <Link href="#" className="text-muted-foreground hover:text-primary">
-                  <Facebook className="h-6 w-6" />
-                  <span className="sr-only">Facebook</span>
-                </Link>
-                <Link href="#" className="text-muted-foreground hover:text-primary">
-                  <Linkedin className="h-6 w-6" />
-                  <span className="sr-only">LinkedIn</span>
-                </Link>
-              </div>
+             <div>
+              <h3 className="font-bold text-lg font-headline mb-4">Stay Updated</h3>
+              <p className="text-sm text-muted-foreground mb-3">Get the latest fitness tips and app updates.</p>
+              <form className="flex gap-2">
+                <Input type="email" placeholder="Enter your email" className="bg-background/50 flex-1" />
+                <Button type="submit" variant="secondary">Subscribe</Button>
+              </form>
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
@@ -311,3 +325,5 @@ export default function LandingPage() {
     </div>
   );
 }
+
+    
