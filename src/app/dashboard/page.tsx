@@ -1,3 +1,4 @@
+"use client";
 
 import {
   Activity,
@@ -22,8 +23,10 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { useState } from 'react';
 
 export default function DashboardPage() {
+  const [aiQuestion, setAiQuestion] = useState('');
   return (
     <div className="space-y-6">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -95,7 +98,12 @@ export default function DashboardPage() {
                 <div className="grid gap-4 py-4">
                   <div className="grid w-full gap-1.5">
                     <Label htmlFor="question">Your Question</Label>
-                    <Textarea placeholder="e.g., How can I improve my bench press?" id="question" />
+                    <Textarea 
+                      placeholder="e.g., How can I improve my bench press?" 
+                      id="question"
+                      value={aiQuestion}
+                      onChange={(e) => setAiQuestion(e.target.value)}
+                    />
                   </div>
                 </div>
                 <DialogFooter>
