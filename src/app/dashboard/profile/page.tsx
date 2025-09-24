@@ -23,7 +23,8 @@ export default function ProfilePage() {
   }
   
   const getAvatarUrl = (avatarId: string) => {
-    return PlaceHolderImages.find(img => img.id === avatarId)?.imageUrl || '';
+    const image = PlaceHolderImages.find(img => img.id === avatarId);
+    return image ? image.imageUrl : '';
   }
 
   const getInitials = (name: string) => {
