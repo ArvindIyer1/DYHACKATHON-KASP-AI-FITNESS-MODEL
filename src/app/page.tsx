@@ -56,19 +56,19 @@ const classes = [
    {
     id: "class-2",
     name: "Yoga & Flexibility",
-    imgUrl: "https://picsum.photos/seed/yoga-flex/600/800",
+    imgUrl: "https://picsum.photos/seed/yoga-class/600/800",
     imgHint: "yoga class"
   },
    {
     id: "class-3",
     name: "Cardio Endurance",
-    imgUrl: "https://picsum.photos/seed/cardio/600/800",
+    imgUrl: "https://picsum.photos/seed/running-person/600/800",
     imgHint: "running"
   },
    {
     id: "class-4",
     name: "Wellness & Recovery",
-    imgUrl: "https://picsum.photos/seed/wellness/600/800",
+    imgUrl: "https://picsum.photos/seed/stretching-meditation/600/800",
     imgHint: "meditation"
   },
 ];
@@ -153,7 +153,7 @@ export default function LandingPage() {
         <section className="relative h-[85vh] min-h-[600px] w-full">
           <div className="absolute inset-0">
             <Image
-              src="https://picsum.photos/seed/hero-new/1800/1200"
+              src="https://picsum.photos/seed/hero-gym/1800/1200"
               alt="People in a modern gym"
               fill
               className="object-cover brightness-50"
@@ -329,6 +329,7 @@ export default function LandingPage() {
     
 
     
+
 
 
 
