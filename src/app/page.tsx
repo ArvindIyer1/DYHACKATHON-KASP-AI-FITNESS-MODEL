@@ -3,11 +3,16 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
 import { UserProvider } from '@/context/user-context';
-import { Dumbbell, Utensils, HeartPulse, Menu } from 'lucide-react';
+import { Dumbbell, Utensils, HeartPulse, Menu, Globe } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { UserSelection } from '@/components/user-selection';
 import { ThemeToggle } from '@/components/theme-toggle';
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
@@ -84,6 +89,18 @@ export default function LandingPage() {
           </nav>
            <div className="flex items-center gap-2">
             <ThemeToggle />
+             <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Globe className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>English</DropdownMenuItem>
+                <DropdownMenuItem>Hindi</DropdownMenuItem>
+                <DropdownMenuItem>Marathi</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button asChild variant="ghost" className="hidden md:flex">
                 <Link href="#login">Log In</Link>
             </Button>
