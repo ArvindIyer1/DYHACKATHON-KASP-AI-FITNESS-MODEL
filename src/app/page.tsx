@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
 import { UserProvider } from '@/context/user-context';
-import { Dumbbell, Utensils, HeartPulse, Menu, Globe } from 'lucide-react';
+import { Dumbbell, Utensils, HeartPulse, Menu, Globe, Instagram, Linkedin, Facebook } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { UserSelection } from '@/components/user-selection';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
@@ -68,7 +69,26 @@ const classes = [
     imgUrl: "https://picsum.photos/seed/wellness/600/800",
     imgHint: "meditation"
   },
-]
+];
+
+const faqItems = [
+  {
+    question: "How does the AI personalize my workout plan?",
+    answer: "Our AI uses your initial goals, experience level, and preferred activities. As you log workouts, it adapts by analyzing your performance, consistency, and feedback to adjust difficulty and suggest new exercises."
+  },
+  {
+    question: "Can I use the app offline?",
+    answer: "Absolutely! Synergy Life is designed to be offline-first. You can log workouts, view your plan, and track progress without an internet connection. Your data will automatically sync once you're back online."
+  },
+  {
+    question: "What is gamification in Synergy Life?",
+    answer: "We use points, streaks, and achievement badges to make your fitness journey more engaging and fun. It's a great way to stay motivated and celebrate your milestones."
+  },
+  {
+    question: "Can I share my progress with friends or family?",
+    answer: "Yes, our multi-user groups feature allows you to share your plan and create a friendly competition with a group leaderboard. It's perfect for keeping each other accountable."
+  }
+];
 
 
 export default function LandingPage() {
@@ -218,6 +238,27 @@ export default function LandingPage() {
           </div>
         </section>
 
+        <section id="faq" className="py-16 md:py-24">
+          <div className="container px-4 md:px-6">
+            <div className="text-center">
+              <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl uppercase font-headline">Frequently Asked Questions</h2>
+              <p className="mt-4 text-muted-foreground md:text-xl">Have questions? We've got answers.</p>
+            </div>
+            <div className="mt-12 max-w-3xl mx-auto">
+              <Accordion type="single" collapsible className="w-full">
+                {faqItems.map((item, index) => (
+                  <AccordionItem key={index} value={`item-${index}`}>
+                    <AccordionTrigger className="text-lg font-semibold">{item.question}</AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground text-base">
+                      {item.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </section>
+
          <section id="login" className="py-16 md:py-24 border-t">
             <div className="container px-4 md:px-6 text-center">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl font-headline">Select Your Profile</h2>
@@ -233,9 +274,52 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="bg-secondary py-8">
-        <div className="container mx-auto px-4 md:px-6 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Synergy Life. All rights reserved.</p>
+      <footer className="bg-secondary text-secondary-foreground border-t">
+        <div className="container mx-auto px-4 md:px-6 py-12">
+          <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
+            <div>
+              <h3 className="font-bold text-lg font-headline mb-4">Synergy Life</h3>
+              <p className="text-sm text-muted-foreground">Your personalized, adaptive AI fitness coach for a healthier life.</p>
+            </div>
+            <div>
+              <h3 className="font-bold text-lg font-headline mb-4">Quick Links</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="#features" className="text-muted-foreground hover:text-primary">Features</Link></li>
+                <li><Link href="#classes" className="text-muted-foreground hover:text-primary">Programs</Link></li>
+                <li><Link href="#faq" className="text-muted-foreground hover:text-primary">FAQ</Link></li>
+                <li><Link href="/onboarding" className="text-muted-foreground hover:text-primary">Get Started</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-lg font-headline mb-4">About</h3>
+               <ul className="space-y-2 text-sm">
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">About Us</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Careers</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Privacy Policy</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Terms of Service</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold text-lg font-headline mb-4">Connect</h3>
+              <div className="flex space-x-4">
+                <Link href="#" className="text-muted-foreground hover:text-primary">
+                  <Instagram className="h-6 w-6" />
+                  <span className="sr-only">Instagram</span>
+                </Link>
+                <Link href="#" className="text-muted-foreground hover:text-primary">
+                  <Facebook className="h-6 w-6" />
+                  <span className="sr-only">Facebook</span>
+                </Link>
+                <Link href="#" className="text-muted-foreground hover:text-primary">
+                  <Linkedin className="h-6 w-6" />
+                  <span className="sr-only">LinkedIn</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
+            <p>© {new Date().getFullYear()} Synergy Life. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </div>
