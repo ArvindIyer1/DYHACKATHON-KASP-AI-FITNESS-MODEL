@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
 import { ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
+import { UserProvider } from '@/context/user-context';
 
 export default function OnboardingPage() {
   return (
@@ -30,7 +31,9 @@ export default function OnboardingPage() {
               Create an account to start your journey.
             </p>
           </div>
-          <OnboardingForm />
+          <UserProvider>
+            <OnboardingForm />
+          </UserProvider>
         </div>
       </div>
     </div>
