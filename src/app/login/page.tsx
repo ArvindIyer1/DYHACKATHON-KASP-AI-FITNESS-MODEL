@@ -24,6 +24,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AppLogo } from "@/components/app-logo";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { GoogleIcon } from "@/components/google-icon";
 
 
 const formSchema = z.object({
@@ -91,6 +92,15 @@ function LoginPageContent() {
     }
   }
 
+  const handleGoogleSignIn = () => {
+    // This is where you'll trigger the Google Sign-In flow.
+    // For now, it's a placeholder.
+    toast({
+      title: "Coming Soon!",
+      description: "Google Sign-In is being implemented.",
+    });
+  };
+
   return (
     <div className="relative flex min-h-dvh flex-col items-center justify-center bg-background p-4">
        <div className="absolute top-4 left-4">
@@ -145,6 +155,20 @@ function LoginPageContent() {
                       </Button>
                     </form>
                 </Form>
+                <div className="relative my-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-card px-2 text-muted-foreground">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
+                <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
+                  <GoogleIcon className="mr-2 h-4 w-4" />
+                  Sign in with Google
+                </Button>
             </CardContent>
         </Card>
          <div className="mt-4 text-center text-sm">
