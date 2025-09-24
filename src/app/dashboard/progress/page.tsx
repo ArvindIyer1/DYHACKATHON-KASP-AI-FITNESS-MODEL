@@ -7,10 +7,20 @@ import { Badge } from '@/components/ui/badge';
 import { Award, Flame, Star, TrendingUp, BarChart, History, Dumbbell, Bike, Heart } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
-import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import { Line, LineChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+
+
+const wellnessProgressData = [
+  { week: '1', Strength: 50, Endurance: 55, Mindfulness: 60 },
+  { week: '2', Strength: 52, Endurance: 58, Mindfulness: 65 },
+  { week: '3', Strength: 55, Endurance: 62, Mindfulness: 68 },
+  { week: '4', Strength: 60, Endurance: 65, Mindfulness: 70 },
+  { week: '5', Strength: 65, Endurance: 70, Mindfulness: 75 },
+  { week: '6', Strength: 72, Endurance: 78, Mindfulness: 72 },
+];
 
 export default function ProgressPage() {
   const { currentUser } = useUser();
@@ -27,10 +37,6 @@ export default function ProgressPage() {
   
   // Prepare data for the chart
   const last7Days = currentUser.activityLog.slice(0, 7).reverse();
-  const chartData = last7Days.map(log => ({
-      date: new Date(log.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      duration: log.duration,
-  }));
 
   const totalDuration = last7Days.reduce((sum, log) => sum + log.duration, 0);
 
@@ -84,26 +90,27 @@ export default function ProgressPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><BarChart className="w-5 h-5" /> Activity This Week</CardTitle>
-            <CardDescription>Minutes of activity logged in the last 7 days.</CardDescription>
+            <CardTitle className="flex items-center gap-2"><TrendingUp className="w-5 h-5" /> Wellness Progress</CardTitle>
+            <CardDescription>Tracking improvements over the last 6 weeks.</CardDescription>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <ChartContainer config={{
-                  duration: {
-                    label: 'Minutes',
-                    color: 'hsl(var(--primary))',
-                  },
+                  Strength: { label: 'Strength', color: 'hsl(var(--chart-1))' },
+                  Endurance: { label: 'Endurance', color: 'hsl(var(--chart-2))' },
+                  Mindfulness: { label: 'Mindfulness', color: 'hsl(var(--chart-3))' },
               }}>
-                  <RechartsBarChart data={chartData} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
-                      <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} />
+                  <LineChart data={wellnessProgressData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
+                      <XAxis dataKey="week" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => `Week ${value}`} />
                       <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                       <Tooltip 
-                          cursor={false} 
+                          cursor={true}
                           content={<ChartTooltipContent indicator="dot" />}
                       />
-                      <Bar dataKey="duration" fill="var(--color-duration)" radius={8} />
-                  </RechartsBarChart>
+                      <Line type="monotone" dataKey="Strength" stroke="var(--color-Strength)" strokeWidth={2} dot={{r: 4, fill: "var(--color-Strength)"}} activeDot={{r: 6}} />
+                      <Line type="monotone" dataKey="Endurance" stroke="var(--color-Endurance)" strokeWidth={2} dot={{r: 4, fill: "var(--color-Endurance)"}} activeDot={{r: 6}}/>
+                      <Line type="monotone" dataKey="Mindfulness" stroke="var(--color-Mindfulness)" strokeWidth={2} dot={{r: 4, fill: "var(--color-Mindfulness)"}} activeDot={{r: 6}}/>
+                  </LineChart>
               </ChartContainer>
             </ResponsiveContainer>
           </CardContent>
