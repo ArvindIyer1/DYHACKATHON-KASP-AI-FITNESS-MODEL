@@ -62,9 +62,9 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b-0">
-        <div className="flex items-center justify-center gap-2 p-4">
-            <AppLogo className="w-8 h-8 text-primary" />
-            <span className="text-xl font-semibold font-headline">Synergy Life</span>
+        <div className="flex items-center justify-center gap-2 p-4 h-16">
+            <AppLogo className="w-8 h-8 text-primary shrink-0" />
+            <span className="text-xl font-semibold font-headline group-data-[collapsible=icon]:hidden">Synergy Life</span>
         </div>
       </SidebarHeader>
 
