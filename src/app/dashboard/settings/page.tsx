@@ -14,29 +14,30 @@ import { Settings, User, Heart, Smartphone, SunMoon, Bell } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 
 export default function SettingsPage() {
-  const { currentUser, updateCurrentUser, setCurrentUserById } = useUser();
+  const { currentUser, setCurrentUserById } = useUser();
   const { setTheme, theme } = useTheme();
   const { toast } = useToast();
   const router = useRouter();
 
   useEffect(() => {
-    if (!currentUser) {
-      const timer = setTimeout(() => {
-          if (!currentUser) {
-            router.push('/login');
-          }
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentUser, router]);
+    // If after a short delay there is still no user, then redirect.
+    // This prevents a flash of the settings page before redirecting.
+    const timer = setTimeout(() => {
+      if (!currentUser) {
+        router.push('/login');
+      }
+    }, 500);
 
+    return () => clearTimeout(timer);
+  }, [currentUser, router]);
 
   if (!currentUser) {
     return (
-        <div className="flex items-center justify-center h-full">
-            <p>Loading user settings...</p>
+        <div className="flex h-96 items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
     );
   }
@@ -261,5 +262,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-
-    
