@@ -49,7 +49,7 @@ const formSchema = z.object({
 
 export function OnboardingForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const { addUser, setCurrentUserById } = useUser();
+  const { addUser } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -58,7 +58,7 @@ export function OnboardingForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      email: "Random@gmail.com",
+      email: "",
       password: "",
       fitnessGoals: "",
       experienceLevel: "Beginner",

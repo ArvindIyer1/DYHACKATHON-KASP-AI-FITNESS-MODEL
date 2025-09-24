@@ -2,7 +2,7 @@
 
 import type { User as AppUser } from "@/lib/types";
 import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from "react";
-import { users as initialUsers, users } from "@/lib/data";
+import { users as initialUsers } from "@/lib/data";
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
 import { useRouter }from "next/navigation";
@@ -37,25 +37,31 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         const appUser = userList.find(u => u.email === user.email);
         setCurrentUser(appUser || null);
       } else {
-        setCurrentUser(null);
+        const demoUser = userList.find(u => u.id === 'Random@gmail.com');
+        if (currentUser && currentUser.id === 'Random@gmail.com') {
+           // Don't log out demo user on auth state change unless explicit
+        } else {
+          setCurrentUser(null);
+        }
       }
       setLoading(false);
     });
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, [userList]);
+  }, [userList, currentUser]);
 
   const setCurrentUserById = useCallback((id: string | null) => {
     if (id === null) {
-      auth.signOut();
-      setCurrentUser(null);
-      setFirebaseUser(null);
+      auth.signOut(); // This will trigger onAuthStateChanged, which will set currentUser to null
       router.push('/login');
       return;
     }
     const user = userList.find(u => u.id === id) || null;
     setCurrentUser(user);
+     if (user?.email !== 'Random@gmail.com') {
+        // This is a real firebase user, onAuthStateChanged will handle it
+    }
   }, [userList, router]);
 
   const addUser = (user: AppUser) => {
