@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -9,6 +10,9 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { AppLogo } from '@/components/app-logo';
 import { useUser } from '@/context/user-context';
@@ -18,44 +22,40 @@ import {
   User as UserIcon,
   LogOut,
   Settings,
-  Heart,
-  Bell,
   Calendar,
+  BarChart3,
+  MessageSquareQuestion,
 } from 'lucide-react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-const menuItems = [
+const coreMenuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/dashboard/log', label: 'Log Activity', icon: PlusCircle },
   { href: '/dashboard/schedule', label: 'Schedule', icon: Calendar },
-  { href: '/dashboard/doctors', label: 'Doctors', icon: Heart },
-  { href: '/dashboard/feedback', label: 'Feedback', icon: PlusCircle },
-  { href: '/dashboard/notifications', label: 'Notifications', icon: Bell },
-  { href: '/dashboard/profile', label: 'Profile', icon: UserIcon },
+  { href: '/dashboard/progress', label: 'Progress', icon: BarChart3 },
+  { href: '/dashboard/log', label: 'Log Activity', icon: PlusCircle },
 ];
+
+const userMenuItems = [
+    { href: '/dashboard/profile', label: 'Profile', icon: UserIcon },
+    { href: '/dashboard/settings', label: 'Settings', icon: Settings },
+];
+
+const helpMenuItems = [
+    { href: '/dashboard/feedback', label: 'Feedback', icon: MessageSquareQuestion },
+];
+
 
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { currentUser, setCurrentUserById } = useUser();
+  const { setCurrentUserById } = useUser();
 
   const handleLogout = () => {
     setCurrentUserById(null);
     router.push('/');
   };
   
-  const getAvatarUrl = (avatarId: string) => {
-    return PlaceHolderImages.find(img => img.id === avatarId)?.imageUrl || '';
-  }
-
-  const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('');
-  }
-
-
-  if (!currentUser) {
-    // Or a loading skeleton
-    return null;
+  const isLinkActive = (href: string) => {
+    return pathname === href || (href !== '/dashboard' && pathname.startsWith(href));
   }
 
   return (
@@ -68,35 +68,71 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent className="p-2">
-        <SidebarMenu>
-          {menuItems.map(({ href, label, icon: Icon }) => (
-            <SidebarMenuItem key={href}>
-              <Link href={href} passHref>
-                <SidebarMenuButton
-                  isActive={pathname.startsWith(href) && (href !== '/dashboard' || pathname === '/dashboard')}
-                  tooltip={{ children: label, side: 'right' }}
-                >
-                  <Icon />
-                  <span>{label}</span>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
+        <SidebarGroup>
+            <SidebarGroupLabel>Core</SidebarGroupLabel>
+            <SidebarMenu>
+            {coreMenuItems.map(({ href, label, icon: Icon }) => (
+                <SidebarMenuItem key={href}>
+                <Link href={href} passHref>
+                    <SidebarMenuButton
+                    isActive={isLinkActive(href)}
+                    tooltip={{ children: label, side: 'right' }}
+                    >
+                    <Icon />
+                    <span>{label}</span>
+                    </SidebarMenuButton>
+                </Link>
+                </SidebarMenuItem>
+            ))}
+            </SidebarMenu>
+        </SidebarGroup>
+
+        <SidebarSeparator />
+
+        <SidebarGroup>
+            <SidebarGroupLabel>User</SidebarGroupLabel>
+             <SidebarMenu>
+                {userMenuItems.map(({ href, label, icon: Icon }) => (
+                    <SidebarMenuItem key={href}>
+                    <Link href={href} passHref>
+                        <SidebarMenuButton
+                        isActive={isLinkActive(href)}
+                        tooltip={{ children: label, side: 'right' }}
+                        >
+                        <Icon />
+                        <span>{label}</span>
+                        </SidebarMenuButton>
+                    </Link>
+                    </SidebarMenuItem>
+                ))}
+            </SidebarMenu>
+        </SidebarGroup>
+
+         <SidebarSeparator />
+
+        <SidebarGroup>
+            <SidebarGroupLabel>Help</SidebarGroupLabel>
+             <SidebarMenu>
+                {helpMenuItems.map(({ href, label, icon: Icon }) => (
+                    <SidebarMenuItem key={href}>
+                    <Link href={href} passHref>
+                        <SidebarMenuButton
+                        isActive={isLinkActive(href)}
+                        tooltip={{ children: label, side: 'right' }}
+                        >
+                        <Icon />
+                        <span>{label}</span>
+                        </SidebarMenuButton>
+                    </Link>
+                    </SidebarMenuItem>
+                ))}
+            </SidebarMenu>
+        </SidebarGroup>
+
       </SidebarContent>
       
       <SidebarFooter className="p-2 border-t-0 mt-auto">
         <SidebarMenu>
-            <SidebarMenuItem>
-                 <SidebarMenuButton
-                    onClick={() => router.push('/dashboard/settings')}
-                    tooltip={{ children: 'Settings', side: 'right' }}
-                    isActive={pathname.startsWith('/dashboard/settings')}
-                >
-                    <Settings />
-                    <span>Settings</span>
-                </SidebarMenuButton>
-            </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={handleLogout}
