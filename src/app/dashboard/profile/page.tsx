@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useUser } from '@/context/user-context';
@@ -5,21 +6,25 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
-import { Award, Flame, Star, Target, Dumbbell } from 'lucide-react';
+import { Award, Flame, Star, Target, Dumbbell, Loader2 } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function ProfilePage() {
   const { currentUser } = useUser();
 
-  useEffect(() => {
-    if (!currentUser) {
-      redirect('/');
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (!currentUser) {
+  //     redirect('/');
+  //   }
+  // }, [currentUser]);
 
   if (!currentUser) {
-    return null;
+    return (
+        <div className="flex h-96 items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+    );
   }
   
   const getAvatarUrl = (avatarId: string) => {

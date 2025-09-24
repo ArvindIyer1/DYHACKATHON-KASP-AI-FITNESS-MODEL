@@ -4,7 +4,7 @@
 import { useUser } from '@/context/user-context';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Award, Flame, Star, TrendingUp, BarChart, History, Dumbbell, Bike, Heart } from 'lucide-react';
+import { Award, Flame, Star, TrendingUp, History, Dumbbell, Bike, Heart, Loader2 } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
@@ -25,14 +25,18 @@ const wellnessProgressData = [
 export default function ProgressPage() {
   const { currentUser } = useUser();
 
-  useEffect(() => {
-    if (!currentUser) {
-      redirect('/');
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (!currentUser) {
+  //     redirect('/');
+  //   }
+  // }, [currentUser]);
 
   if (!currentUser) {
-    return null;
+    return (
+        <div className="flex h-96 items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+    );
   }
   
   // Prepare data for the chart

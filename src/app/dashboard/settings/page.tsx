@@ -22,17 +22,17 @@ export default function SettingsPage() {
   const { toast } = useToast();
   const router = useRouter();
 
-  useEffect(() => {
-    // If after a short delay there is still no user, then redirect.
-    // This prevents a flash of the settings page before redirecting.
-    const timer = setTimeout(() => {
-      if (!currentUser) {
-        router.push('/login');
-      }
-    }, 500);
+  // useEffect(() => {
+  //   // If after a short delay there is still no user, then redirect.
+  //   // This prevents a flash of the settings page before redirecting.
+  //   const timer = setTimeout(() => {
+  //     if (!currentUser) {
+  //       router.push('/login');
+  //     }
+  //   }, 500);
 
-    return () => clearTimeout(timer);
-  }, [currentUser, router]);
+  //   return () => clearTimeout(timer);
+  // }, [currentUser, router]);
 
   if (!currentUser) {
     return (
