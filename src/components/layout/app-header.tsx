@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LogOut, User as UserIcon } from 'lucide-react';
+import { LogOut, User as UserIcon, Bell, Search, Settings } from 'lucide-react';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/navigation';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -33,20 +33,23 @@ export function AppHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6">
+    <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center justify-between gap-4 border-b border-white/10 bg-background/80 px-4 backdrop-blur-sm sm:px-6">
       <div className="flex items-center gap-2">
          <SidebarTrigger className="md:hidden" />
-         <h1 className="hidden text-xl font-semibold font-headline sm:block">
-            Synergy Life
-         </h1>
       </div>
      
       <div className="flex items-center gap-2">
+        <Button variant="ghost" size="icon">
+          <Search className="h-5 w-5" />
+        </Button>
+        <Button variant="ghost" size="icon">
+          <Bell className="h-5 w-5" />
+        </Button>
         {currentUser && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                <Avatar className="h-10 w-10">
+                <Avatar className="h-10 w-10 border-2 border-primary">
                   <AvatarImage src={getAvatarUrl(currentUser.avatarId)} alt={currentUser.name} data-ai-hint="person portrait" />
                   <AvatarFallback>{getInitials(currentUser.name)}</AvatarFallback>
                 </Avatar>
@@ -63,6 +66,10 @@ export function AppHeader() {
               <DropdownMenuItem onClick={() => router.push('/dashboard/profile')}>
                 <UserIcon className="mr-2 h-4 w-4" />
                 <span>Profile</span>
+              </DropdownMenuItem>
+               <DropdownMenuItem>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>

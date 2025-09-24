@@ -10,8 +10,6 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { AppLogo } from '@/components/app-logo';
 import { useUser } from '@/context/user-context';
 import {
@@ -20,13 +18,18 @@ import {
   User as UserIcon,
   LogOut,
   Settings,
+  Heart,
+  Bell,
+  Calendar,
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/dashboard/log', label: 'Log Activity', icon: PlusCircle },
-  { href: '/dashboard/profile', label: 'Profile', icon: UserIcon },
+  { href: '/dashboard/schedule', label: 'Schedule', icon: Calendar },
+  { href: '/dashboard/doctors', label: 'Doctors', icon: Heart },
+  { href: '/dashboard/feedback', label: 'Feedback', icon: PlusCircle },
+  { href: '/dashboard/notifications', label: 'Notifications', icon: Bell },
 ];
 
 export function AppSidebar() {
@@ -55,8 +58,8 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="border-b">
-        <div className="flex items-center gap-2 p-2">
+      <SidebarHeader className="border-b-0">
+        <div className="flex items-center justify-center gap-2 p-4">
             <AppLogo className="w-8 h-8 text-primary" />
             <span className="text-xl font-semibold font-headline">Synergy Life</span>
         </div>
@@ -68,7 +71,7 @@ export function AppSidebar() {
             <SidebarMenuItem key={href}>
               <Link href={href} passHref>
                 <SidebarMenuButton
-                  isActive={pathname === href}
+                  isActive={pathname.startsWith(href) && (href !== '/dashboard' || pathname === '/dashboard')}
                   tooltip={{ children: label, side: 'right' }}
                 >
                   <Icon />
@@ -80,8 +83,18 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
       
-      <SidebarFooter className="p-2 border-t mt-auto">
+      <SidebarFooter className="p-2 border-t-0 mt-auto">
         <SidebarMenu>
+            <SidebarMenuItem>
+                 <SidebarMenuButton
+                    onClick={() => router.push('/dashboard/settings')}
+                    tooltip={{ children: 'Settings', side: 'right' }}
+                    isActive={pathname.startsWith('/dashboard/settings')}
+                >
+                    <Settings />
+                    <span>Settings</span>
+                </SidebarMenuButton>
+            </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={handleLogout}
