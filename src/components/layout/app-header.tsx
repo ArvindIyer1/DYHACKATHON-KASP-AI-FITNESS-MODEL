@@ -10,10 +10,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LogOut, User as UserIcon, Bell, Search, Settings } from 'lucide-react';
+import { LogOut, User as UserIcon, Bell, Search, Settings, Globe } from 'lucide-react';
 import { useUser } from '@/context/user-context';
 import { useRouter } from 'next/navigation';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { ThemeToggle } from '../theme-toggle';
 
 export function AppHeader() {
   const { currentUser, setCurrentUserById } = useUser();
@@ -44,6 +45,10 @@ export function AppHeader() {
         </Button>
         <Button variant="ghost" size="icon">
           <Bell className="h-5 w-5" />
+        </Button>
+        <ThemeToggle />
+         <Button variant="ghost" size="icon">
+          <Globe className="h-5 w-5" />
         </Button>
         {currentUser && (
           <DropdownMenu>
