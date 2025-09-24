@@ -8,16 +8,25 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 
+const genderProfiles = [
+  {
+    id: 'female',
+    name: 'Female',
+    avatarId: 'new-user-female',
+  },
+  {
+    id: 'male',
+    name: 'Male',
+    avatarId: 'new-user-male',
+  }
+]
+
 export function UserSelection() {
-  const { users, setCurrentUserById } = useUser();
+  const { setCurrentUserById } = useUser();
   const router = useRouter();
 
   const handleUserSelect = (userId: string) => {
-    setCurrentUserById(userId);
-    router.push('/dashboard');
-  };
-
-  const handleNewUser = () => {
+    // This would ideally set a gender preference before onboarding
     router.push('/onboarding');
   };
   
@@ -27,8 +36,8 @@ export function UserSelection() {
 
   return (
     <div className="w-full max-w-2xl">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-        {users.map((user) => (
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-6">
+        {genderProfiles.map((user) => (
           <button
             key={user.id}
             onClick={() => handleUserSelect(user.id)}
@@ -54,19 +63,6 @@ export function UserSelection() {
             </Card>
           </button>
         ))}
-        <button
-          onClick={handleNewUser}
-          className="group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
-        >
-          <Card className="h-full border-dashed border-2 hover:border-solid hover:border-primary transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1 bg-card">
-            <CardContent className="p-4 flex flex-col items-center justify-center h-full gap-2">
-              <PlusCircle className="w-12 h-12 text-muted-foreground group-hover:text-primary transition-colors" />
-              <p className="font-semibold text-lg text-muted-foreground group-hover:text-primary transition-colors">
-                New Profile
-              </p>
-            </CardContent>
-          </Card>
-        </button>
       </div>
     </div>
   );
