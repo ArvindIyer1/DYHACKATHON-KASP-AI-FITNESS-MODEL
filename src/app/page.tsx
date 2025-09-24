@@ -6,6 +6,7 @@ import { UserProvider } from '@/context/user-context';
 import { Dumbbell, Utensils, HeartPulse, Menu } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { UserSelection } from '@/components/user-selection';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -82,6 +83,7 @@ export default function LandingPage() {
             <NavLink href="#about">About</NavLink>
           </nav>
            <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Button asChild variant="ghost" className="hidden md:flex">
                 <Link href="#login">Log In</Link>
             </Button>
