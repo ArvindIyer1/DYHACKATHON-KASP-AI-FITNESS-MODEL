@@ -24,7 +24,7 @@ import {
   Settings,
   Calendar,
   BarChart3,
-  MessageSquareQuestion,
+  MessageSquareQuote,
 } from 'lucide-react';
 
 const coreMenuItems = [
@@ -40,7 +40,7 @@ const userMenuItems = [
 ];
 
 const helpMenuItems = [
-    { href: '/dashboard/feedback', label: 'Feedback', icon: MessageSquareQuestion },
+    { href: '/dashboard/feedback', label: 'Feedback', icon: MessageSquareQuote },
 ];
 
 
