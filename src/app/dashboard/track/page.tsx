@@ -37,6 +37,10 @@ export default function TrackPage() {
     }
   };
 
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
   const handleAnalyze = async () => {
     if (!videoFile) {
       toast({
@@ -87,17 +91,18 @@ export default function TrackPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="video-upload">Video File</Label>
-            <Input 
-                id="video-upload" 
-                type="file" 
-                accept="video/mp4,video/quicktime,video/x-msvideo"
-                onChange={handleFileChange}
-                ref={fileInputRef}
-                className="file:text-foreground"
-            />
-          </div>
+          <Input 
+              id="video-upload" 
+              type="file" 
+              accept="video/mp4,video/quicktime,video/x-msvideo"
+              onChange={handleFileChange}
+              ref={fileInputRef}
+              className="hidden"
+          />
+          <Button variant="outline" onClick={handleUploadClick}>
+            <Upload className="mr-2 h-4 w-4" />
+            Upload Video
+          </Button>
           {videoFile && (
             <Alert>
                 <Upload className="h-4 w-4" />
