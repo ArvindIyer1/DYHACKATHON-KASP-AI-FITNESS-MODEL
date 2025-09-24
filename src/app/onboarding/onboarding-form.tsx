@@ -30,8 +30,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import type { User } from "@/lib/types";
 import { generateInitialWorkoutPlan } from "@/ai/flows/generate-initial-workout-plan";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+
 
 
 const formSchema = z.object({
@@ -49,7 +48,7 @@ const formSchema = z.object({
 
 export function OnboardingForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const { addUser } = useUser();
+  const { addUser, setCurrentUserById } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -64,6 +63,7 @@ export function OnboardingForm() {
       experienceLevel: "Beginner",
       preferredActivities: "",
       availableTime: "",
+      gender: "male", // Set default gender
       height: 0,
       weight: 0,
     },
@@ -77,29 +77,112 @@ export function OnboardingForm() {
   }, [searchParams, form]);
 
 
+  // Fallback workout plan in case AI generation fails
+  const getFallbackWorkoutPlan = (experienceLevel: string) => {
+    const beginnerPlan = [
+      {
+        day: 'Monday',
+        title: 'Full Body Introduction',
+        focus: 'Basic Movements',
+        exercises: [
+          { name: 'Bodyweight Squats', sets: '3', reps: '15', rest: '60s' },
+          { name: 'Push-ups (on knees)', sets: '3', reps: '10', rest: '60s' },
+          { name: 'Plank', sets: '3', reps: '30s', rest: '60s' },
+        ],
+      },
+      {
+        day: 'Wednesday',
+        title: 'Light Cardio',
+        focus: 'Heart Health',
+        exercises: [
+          { name: 'Brisk Walking', sets: '1', reps: '20 min', rest: 'N/A' },
+          { name: 'Jumping Jacks', sets: '3', reps: '30s', rest: '60s' },
+          { name: 'High Knees', sets: '3', reps: '30s', rest: '60s' },
+        ],
+      },
+      {
+        day: 'Friday',
+        title: 'Flexibility and Core',
+        focus: 'Stretching & Abs',
+        exercises: [
+          { name: 'Cat-Cow Stretch', sets: '2', reps: '10', rest: '30s' },
+          { name: 'Bird-Dog', sets: '3', reps: '10 per side', rest: '45s' },
+          { name: 'Glute Bridges', sets: '3', reps: '15', rest: '60s' },
+        ],
+      },
+    ];
+
+    const intermediatePlan = [
+      {
+        day: 'Monday',
+        title: 'Upper Body Strength',
+        focus: 'Chest, Shoulders, Triceps',
+        exercises: [
+          { name: 'Push-ups', sets: '3', reps: '12-15', rest: '60s' },
+          { name: 'Pike Push-ups', sets: '3', reps: '8-10', rest: '60s' },
+          { name: 'Tricep Dips', sets: '3', reps: '10-12', rest: '60s' },
+        ],
+      },
+      {
+        day: 'Wednesday',
+        title: 'Lower Body Power',
+        focus: 'Quads, Hamstrings, Glutes',
+        exercises: [
+          { name: 'Squats', sets: '4', reps: '15-20', rest: '60s' },
+          { name: 'Lunges', sets: '3', reps: '12 per leg', rest: '60s' },
+          { name: 'Single-leg Glute Bridges', sets: '3', reps: '10 per leg', rest: '60s' },
+        ],
+      },
+      {
+        day: 'Friday',
+        title: 'Core and Cardio',
+        focus: 'Abs and Conditioning',
+        exercises: [
+          { name: 'Mountain Climbers', sets: '3', reps: '30s', rest: '30s' },
+          { name: 'Plank', sets: '3', reps: '45s', rest: '45s' },
+          { name: 'Bicycle Crunches', sets: '3', reps: '20', rest: '30s' },
+        ],
+      },
+    ];
+
+    return experienceLevel === 'Beginner' ? beginnerPlan : intermediatePlan;
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     
     try {
-      // 1. Create user in Firebase Auth
-      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-      const firebaseUser = userCredential.user;
-
-
-      // 2. Generate workout plan
-      const planOutput = await generateInitialWorkoutPlan({
-        fitnessGoals: values.fitnessGoals,
-        experienceLevel: values.experienceLevel,
-        availableTime: values.availableTime,
-        preferredActivities: values.preferredActivities,
-        wellnessPreferences: 'Meditation, stretching', // default value
-      });
+      let workoutPlan, wellnessSuggestions;
       
-      // 3. Create the app-specific user profile
+      try {
+        // 1. Try to generate AI workout plan
+        const planOutput = await generateInitialWorkoutPlan({
+          fitnessGoals: values.fitnessGoals,
+          experienceLevel: values.experienceLevel,
+          availableTime: values.availableTime,
+          preferredActivities: values.preferredActivities,
+          wellnessPreferences: 'Meditation, stretching', // default value
+        });
+        
+        workoutPlan = planOutput.workoutPlan;
+        wellnessSuggestions = planOutput.wellnessSuggestions;
+      } catch (aiError) {
+        console.warn("AI workout generation failed, using fallback plan:", aiError);
+        // Use fallback workout plan
+        workoutPlan = getFallbackWorkoutPlan(values.experienceLevel);
+        wellnessSuggestions = [
+          'Drink a glass of water first thing in the morning.',
+          'Try to stand up and stretch for 5 minutes every hour.',
+          'Read a book for 15 minutes before bed.',
+        ];
+      }
+      
+      // 2. Create the app-specific user profile
       const newUser: User = {
-          id: firebaseUser.uid, // Use Firebase UID as the ID
+          id: values.email, // Use email as the ID for simplicity
           name: values.name,
           email: values.email,
+          password: values.password, // For mock authentication
           avatarId: values.gender === 'female' ? 'new-user-female' : 'new-user-male',
           points: 0,
           streak: 0,
@@ -110,18 +193,16 @@ export function OnboardingForm() {
           workoutPlan: {
             week: 1,
             weeklyGoal: "First week of your new personalized plan!",
-            // @ts-ignore
-            schedule: planOutput.workoutPlan, 
-            // @ts-ignore
-            wellnessSuggestions: planOutput.wellnessSuggestions,
+            schedule: workoutPlan, 
+            wellnessSuggestions: wellnessSuggestions,
           }
       };
 
-      // 4. Save the new user profile to our mock data store
-      // In a real app, you would save this to Firestore under `users/{firebaseUser.uid}`
+      // 3. Save the new user profile to our mock data store
       addUser(newUser);
       
-      // 5. The onAuthStateChanged listener in UserProvider will automatically log the user in.
+      // 4. Log the user in
+      setCurrentUserById(newUser.id);
       
       toast({
           title: "Welcome to Synergy Life!",
@@ -129,11 +210,11 @@ export function OnboardingForm() {
       });
 
       router.push('/dashboard');
-    } catch(error: any) {
+    } catch(error: unknown) {
       console.error("Failed to sign up:", error);
       toast({
         title: "Sign-up Error",
-        description: error.message || "Could not create your account. Please try again.",
+        description: error instanceof Error ? error.message : "Could not create your account. Please try again.",
         variant: "destructive",
       });
     } finally {

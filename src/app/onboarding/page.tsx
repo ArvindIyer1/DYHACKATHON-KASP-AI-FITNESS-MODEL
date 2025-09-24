@@ -5,6 +5,7 @@ import { AppLogo } from '@/components/app-logo';
 import { ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
 import { UserProvider } from '@/context/user-context';
+import { Suspense } from 'react';
 
 export default function OnboardingPage() {
   return (
@@ -25,7 +26,9 @@ export default function OnboardingPage() {
             </p>
           </div>
           <UserProvider>
-            <OnboardingForm />
+            <Suspense fallback={<div>Loading...</div>}>
+              <OnboardingForm />
+            </Suspense>
           </UserProvider>
         </div>
       </div>

@@ -59,7 +59,9 @@ export function ActivityLogForm() {
         const newLog = {
             id: `log-${Date.now()}`,
             date: format(values.date, "yyyy-MM-dd"),
-            ...values,
+            activity: values.activity,
+            duration: values.duration,
+            intensity: values.intensity,
             notes: values.notes || "",
         };
 

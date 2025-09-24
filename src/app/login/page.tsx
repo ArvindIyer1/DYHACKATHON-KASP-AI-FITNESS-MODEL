@@ -22,9 +22,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { AppLogo } from "@/components/app-logo";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
 import { GoogleIcon } from "@/components/google-icon";
+import { signIn } from "next-auth/react";
+import { Separator } from "@/components/ui/separator";
 
 
 const formSchema = z.object({
@@ -34,7 +34,8 @@ const formSchema = z.object({
 
 function LoginPageContent() {
   const [isLoading, setIsLoading] = useState(false);
-  const { users, setCurrentUserById } = useUser();
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const { users, setCurrentUserById, login } = useUser();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -48,43 +49,29 @@ function LoginPageContent() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    // DEMO: Bypass Firebase for the random user
-    if (values.email === 'Random@gmail.com' && values.password === '12345678') {
-      const demoUser = users.find(u => u.email === 'Random@gmail.com');
-      if (demoUser) {
-        setCurrentUserById(demoUser.id);
+    
+    try {
+      const loginSuccess = await login(values.email, values.password);
+      
+      if (loginSuccess) {
+        const user = users.find(u => u.email === values.email);
         toast({
           title: "Login Successful",
-          description: `Welcome back, ${demoUser.name}!`,
+          description: `Welcome back, ${user?.name || 'User'}!`,
         });
         router.push('/welcome');
       } else {
-         toast({
+        toast({
           title: "Login Failed",
-          description: "Demo user not found.",
+          description: "Invalid email or password.",
           variant: "destructive",
         });
       }
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
-      const user = userCredential.user;
-      
-      // The onAuthStateChanged listener in UserProvider will handle setting the user context
-      toast({
-        title: "Login Successful",
-        description: `Welcome back!`,
-      });
-      router.push('/welcome');
-
-    } catch (error: any) {
+    } catch (error) {
       console.error("Login failed:", error);
       toast({
         title: "Login Failed",
-        description: error.message || "An unexpected error occurred.",
+        description: "An unexpected error occurred.",
         variant: "destructive",
       });
     } finally {
@@ -92,13 +79,37 @@ function LoginPageContent() {
     }
   }
 
-  const handleGoogleSignIn = () => {
-    // This is where you'll trigger the Google Sign-In flow.
-    // For now, it's a placeholder.
-    toast({
-      title: "Coming Soon!",
-      description: "Google Sign-In is being implemented.",
-    });
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    try {
+      const result = await signIn('google', {
+        callbackUrl: '/dashboard',
+        redirect: false,
+      });
+      
+      if (result?.error) {
+        toast({
+          title: "Sign-in Failed",
+          description: "Failed to sign in with Google. Please try again.",
+          variant: "destructive",
+        });
+      } else if (result?.ok) {
+        toast({
+          title: "Success!",
+          description: "Successfully signed in with Google.",
+        });
+        router.push('/dashboard');
+      }
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+      toast({
+        title: "Sign-in Failed",
+        description: "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGoogleLoading(false);
+    }
   };
 
   return (
@@ -165,9 +176,13 @@ function LoginPageContent() {
                     </span>
                   </div>
                 </div>
-                <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
-                  <GoogleIcon className="mr-2 h-4 w-4" />
-                  Sign in with Google
+                <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isGoogleLoading}>
+                  {isGoogleLoading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <GoogleIcon className="mr-2 h-4 w-4" />
+                  )}
+                  {isGoogleLoading ? "Signing in..." : "Sign in with Google"}
                 </Button>
             </CardContent>
         </Card>

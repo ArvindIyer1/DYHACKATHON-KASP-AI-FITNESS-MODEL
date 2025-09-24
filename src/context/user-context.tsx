@@ -3,19 +3,19 @@
 import type { User as AppUser } from "@/lib/types";
 import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from "react";
 import { users as initialUsers } from "@/lib/data";
-import { auth } from "@/lib/firebase";
-import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
-import { useRouter }from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 
 interface UserContextType {
   users: AppUser[];
   currentUser: AppUser | null;
-  firebaseUser: FirebaseUser | null;
   loading: boolean;
   setCurrentUserById: (id: string | null) => void;
   addUser: (user: AppUser) => void;
   updateCurrentUser: (updatedData: Partial<AppUser>) => void;
+  login: (email: string, password: string) => Promise<boolean>;
+  logout: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -23,46 +23,78 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [userList, setUserList] = useState<AppUser[]>(initialUsers);
   const [currentUser, setCurrentUser] = useState<AppUser | null>(null);
-  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { data: session, status } = useSession();
 
-
+  // Handle NextAuth session changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setFirebaseUser(user);
-      if (user) {
-        // If there's a Firebase user, find the corresponding app user from our mock data.
-        // In a real app, you might fetch this from Firestore.
-        const appUser = userList.find(u => u.email === user.email);
-        setCurrentUser(appUser || null);
+    if (status === "loading") {
+      setLoading(true);
+      return;
+    }
+    
+    setLoading(false);
+    
+    if (session?.user?.email) {
+      // Find or create user from Google OAuth
+      let user = userList.find(u => u.email === session.user!.email);
+      
+      if (!user) {
+        // Create new user from Google OAuth data
+        const newUser: AppUser = {
+          id: session.user.email,
+          name: session.user.name || "New User",
+          email: session.user.email,
+          avatarId: "avatar-1", // Default avatar
+          points: 0,
+          streak: 0,
+          achievements: [],
+          activityLog: [],
+          fitnessGoals: "",
+          experienceLevel: "Beginner"
+        };
+        
+        setUserList(prev => [...prev, newUser]);
+        setCurrentUser(newUser);
       } else {
-        const demoUser = userList.find(u => u.id === 'Random@gmail.com');
-        if (currentUser && currentUser.id === 'Random@gmail.com') {
-           // Don't log out demo user on auth state change unless explicit
-        } else {
-          setCurrentUser(null);
-        }
+        setCurrentUser(user);
       }
-      setLoading(false);
-    });
-
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [userList, currentUser]);
+    } else if (status === "unauthenticated") {
+      // Initialize with demo user for local authentication
+      const demoUser = userList.find(u => u.id === 'Random@gmail.com');
+      if (!currentUser && demoUser) {
+        setCurrentUser(demoUser);
+      }
+    }
+  }, [session, status, userList, currentUser]);
 
   const setCurrentUserById = useCallback((id: string | null) => {
     if (id === null) {
-      auth.signOut(); // This will trigger onAuthStateChanged, which will set currentUser to null
+      setCurrentUser(null);
       router.push('/login');
       return;
     }
     const user = userList.find(u => u.id === id) || null;
     setCurrentUser(user);
-     if (user?.email !== 'Random@gmail.com') {
-        // This is a real firebase user, onAuthStateChanged will handle it
-    }
   }, [userList, router]);
+
+  const login = useCallback(async (email: string, password: string): Promise<boolean> => {
+    const user = userList.find(u => u.email === email && u.password === password);
+    if (user) {
+      setCurrentUser(user);
+      return true;
+    }
+    return false;
+  }, [userList]);
+
+  const logout = useCallback(async () => {
+    setCurrentUser(null);
+    if (session) {
+      await signOut({ redirect: false });
+    }
+    router.push('/login');
+  }, [router, session]);
 
   const addUser = (user: AppUser) => {
     setUserList(prevUsers => [...prevUsers, user]);
@@ -79,7 +111,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
 
   return (
-    <UserContext.Provider value={{ users: userList, currentUser, firebaseUser, loading, setCurrentUserById, addUser, updateCurrentUser }}>
+    <UserContext.Provider value={{ users: userList, currentUser, loading, setCurrentUserById, addUser, updateCurrentUser, login, logout }}>
       {children}
     </UserContext.Provider>
   );

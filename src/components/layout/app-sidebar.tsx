@@ -27,10 +27,14 @@ import {
   BarChart3,
   MessageSquareQuote,
   Video,
+  Bot,
+  Trophy,
 } from 'lucide-react';
 
 const coreMenuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/dashboard/ai-coach', label: 'AI Coach', icon: Bot },
+  { href: '/dashboard/achievements', label: 'Achievements', icon: Trophy },
   { href: '/dashboard/schedule', label: 'Schedule', icon: Calendar },
   { href: '/dashboard/progress', label: 'Progress', icon: BarChart3 },
   { href: '/dashboard/log', label: 'Log Activity', icon: PlusCircle },
