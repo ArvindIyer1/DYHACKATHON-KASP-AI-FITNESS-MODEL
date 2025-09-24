@@ -56,7 +56,7 @@ function LoginPageContent() {
           title: "Login Successful",
           description: `Welcome back, ${demoUser.name}!`,
         });
-        router.push('/dashboard');
+        router.push('/welcome');
       } else {
          toast({
           title: "Login Failed",
@@ -77,7 +77,7 @@ function LoginPageContent() {
         title: "Login Successful",
         description: `Welcome back!`,
       });
-      router.push('/dashboard');
+      router.push('/welcome');
 
     } catch (error: any) {
       console.error("Login failed:", error);
