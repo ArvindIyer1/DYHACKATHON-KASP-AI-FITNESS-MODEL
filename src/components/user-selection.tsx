@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useUser } from '@/context/user-context';
@@ -8,26 +9,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 
-const genderProfiles = [
-  {
-    id: 'female',
-    name: 'Female',
-    avatarId: 'new-user-female',
-  },
-  {
-    id: 'male',
-    name: 'Male',
-    avatarId: 'new-user-male',
-  }
-]
-
 export function UserSelection() {
-  const { setCurrentUserById } = useUser();
+  const { users, setCurrentUserById } = useUser();
   const router = useRouter();
 
   const handleUserSelect = (userId: string) => {
-    // This would ideally set a gender preference before onboarding
-    router.push('/onboarding');
+    setCurrentUserById(userId);
+    router.push('/dashboard');
   };
   
   const getAvatarUrl = (avatarId: string) => {
@@ -35,9 +23,9 @@ export function UserSelection() {
   }
 
   return (
-    <div className="w-full max-w-2xl">
-      <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-6">
-        {genderProfiles.map((user) => (
+    <div className="w-full max-w-4xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        {users.map((user) => (
           <button
             key={user.id}
             onClick={() => handleUserSelect(user.id)}
@@ -45,7 +33,7 @@ export function UserSelection() {
           >
             <Card className="overflow-hidden transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-primary bg-card">
               <CardContent className="p-0 flex flex-col items-center">
-                <div className="relative w-full aspect-square">
+                <div className="relative w-full aspect-[4/5]">
                   <Image
                     src={getAvatarUrl(user.avatarId)}
                     alt={`Avatar for ${user.name}`}
@@ -63,6 +51,19 @@ export function UserSelection() {
             </Card>
           </button>
         ))}
+          <button
+            onClick={() => router.push('/login/gender')}
+            className="group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
+            >
+             <Card className="overflow-hidden transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-primary bg-card h-full">
+                <CardContent className="p-0 flex flex-col items-center justify-center h-full gap-4">
+                    <PlusCircle className="w-16 h-16 text-muted-foreground group-hover:text-primary transition-colors" />
+                    <p className="font-semibold text-lg text-muted-foreground group-hover:text-primary transition-colors">
+                    Create New Profile
+                    </p>
+                </CardContent>
+            </Card>
+        </button>
       </div>
     </div>
   );

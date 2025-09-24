@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,10 +23,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useUser } from "@/context/user-context";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import type { User } from "@/lib/types";
 import { generateInitialWorkoutPlan } from "@/ai/flows/generate-initial-workout-plan";
@@ -38,12 +39,16 @@ const formSchema = z.object({
   experienceLevel: z.enum(['Beginner', 'Intermediate', 'Advanced']),
   preferredActivities: z.string().min(3, { message: "List at least one activity."}),
   availableTime: z.string().min(3, { message: "Please specify your available time."}),
+  gender: z.enum(['male', 'female', 'other']),
+  height: z.coerce.number().positive({ message: "Height must be a positive number." }),
+  weight: z.coerce.number().positive({ message: "Weight must be a positive number." }),
 });
 
 export function OnboardingForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { addUser, setCurrentUserById } = useUser();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -55,30 +60,46 @@ export function OnboardingForm() {
       experienceLevel: "Beginner",
       preferredActivities: "",
       availableTime: "",
+      height: 0,
+      weight: 0,
     },
   });
+
+  useEffect(() => {
+    const gender = searchParams.get('gender');
+    if (gender === 'male' || gender === 'female' || gender === 'other') {
+      form.setValue('gender', gender);
+    }
+  }, [searchParams, form]);
+
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     
     try {
       const planOutput = await generateInitialWorkoutPlan({
-        ...values,
+        fitnessGoals: values.fitnessGoals,
+        experienceLevel: values.experienceLevel,
+        availableTime: values.availableTime,
+        preferredActivities: values.preferredActivities,
         wellnessPreferences: 'Meditation, stretching', // default value
+        gender: values.gender,
+        height: values.height.toString(),
+        weight: values.weight.toString(),
       });
       
       const newUser: User = {
           id: values.email,
           name: values.name,
           email: values.email,
-          avatarId: 'new-user',
+          avatarId: values.gender === 'female' ? 'new-user-female' : 'new-user-male',
           points: 0,
           streak: 0,
           achievements: [],
           activityLog: [],
           fitnessGoals: values.fitnessGoals,
           experienceLevel: values.experienceLevel,
-          workoutPlan: { // This structure should match the AI output
+          workoutPlan: {
             week: 1,
             weeklyGoal: "First week of your new personalized plan!",
             // @ts-ignore
@@ -138,6 +159,34 @@ export function OnboardingForm() {
               </FormItem>
             )}
           />
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <FormField
+              control={form.control}
+              name="height"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Height (cm)</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="175" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="weight"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Weight (kg)</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="70" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
             name="fitnessGoals"
