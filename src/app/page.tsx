@@ -3,9 +3,14 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
 import { UserSelection } from '@/components/user-selection';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Check } from 'lucide-react';
 import { UserProvider } from '@/context/user-context';
+import { Check, ChevronDown } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
@@ -23,6 +28,25 @@ const features = [
   "Community & Challenges"
 ];
 
+const faqs = [
+  {
+    question: "What is Synergy Life?",
+    answer: "Synergy Life is a next-generation wellness application that uses AI to create personalized fitness and wellness plans tailored to your goals, experience, and lifestyle."
+  },
+  {
+    question: "How does the AI personalization work?",
+    answer: "Our AI analyzes your initial onboarding data and continues to learn from your logged activities and feedback. It adapts your workout plan, suggests new exercises, and modifies your wellness routine to ensure you're always progressing."
+  },
+  {
+    question: "Is Synergy Life suitable for beginners?",
+    answer: "Absolutely! We cater to all experience levels, from complete beginners to advanced athletes. Your plan is customized to your current fitness level and will scale with you as you get stronger."
+  },
+  {
+    question: "What if I miss a workout?",
+    answer: "Life happens! Our AI is designed to be flexible. It will adjust your plan to help you get back on track without overwhelming you. You can also use the 'Adapt My Plan' feature to manually request changes."
+  }
+]
+
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -32,8 +56,8 @@ export default function LandingPage() {
           <span className="font-bold text-lg">Synergy Life</span>
         </Link>
         <nav className="hidden md:flex items-center space-x-6">
-          <NavLink href="#">Features</NavLink>
-          <NavLink href="#">Pricing</NavLink>
+          <NavLink href="#features">Features</NavLink>
+          <NavLink href="#faq">FAQ</NavLink>
           <NavLink href="#">About</NavLink>
         </nav>
         <div className="flex items-center gap-2">
@@ -115,6 +139,28 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
+        <section id="faq" className="py-16 md:py-24">
+          <div className="container px-4 md:px-6 max-w-3xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Frequently Asked Questions</h2>
+              <p className="mt-4 text-muted-foreground md:text-lg">
+                Find answers to common questions about Synergy Life.
+              </p>
+            </div>
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq, i) => (
+                <AccordionItem value={`item-${i}`} key={i}>
+                  <AccordionTrigger>{faq.question}</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </section>
+
       </main>
 
       <footer className="bg-muted py-8">
