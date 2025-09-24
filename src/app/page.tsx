@@ -244,7 +244,7 @@ export default function LandingPage() {
           <div className="container px-4 md:px-6">
             <div className="text-center">
               <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl uppercase font-headline">Frequently Asked Questions</h2>
-              <p className="mt-4 text-muted-foreground md:text-xl">Have questions? We've got answers.</p>
+              <p className="mt-4 text-muted-foreground md:text-xl">Have questions? We&apos;ve got answers.</p>
             </div>
             <div className="mt-12 max-w-3xl mx-auto">
               <Accordion type="single" collapsible className="w-full">

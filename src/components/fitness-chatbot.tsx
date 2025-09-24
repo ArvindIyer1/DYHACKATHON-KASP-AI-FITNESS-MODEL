@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 
 const MOCK_API = "https://jsonplaceholder.typicode.com";
-const EXTERNAL_CHATBOT_URL = process.env.NEXT_PUBLIC_EXTERNAL_CHATBOT_URL || "https://tysrs6ck2exayzohs-jgzegxb.hooks.n8n.cloud/";
+const EXTERNAL_CHATBOT_URL = process.env.NEXT_PUBLIC_EXTERNAL_CHATBOT_URL || "https://tysrs6ck2exayzohsjgzegxb.hooks.n8n.cloud";
 const ENABLE_EXTERNAL_CHATBOT = process.env.NEXT_PUBLIC_ENABLE_EXTERNAL_CHATBOT === "true";
 
 interface ChatMessage {
@@ -219,7 +219,7 @@ export function FitnessChatbot() {
   // Call external chatbot API
   const callExternalChatbot = async (message: string): Promise<string | null> => {
     try {
-      const response = await fetch('https://tysrs6ck2exayzohs-jgzegxb.hooks.n8n.cloud/webhook-test/d94a219f-6b7c-4788-b9b9-90c98160b957', {
+      const response = await fetch('https://tysrs6ck2exayzohsjgzegxb.hooks.n8n.cloud', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
