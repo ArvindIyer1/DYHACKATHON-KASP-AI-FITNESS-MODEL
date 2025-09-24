@@ -144,4 +144,58 @@ export const users: User[] = [
             ],
         },
     },
+    {
+        id: 'Random@gmail.com',
+        name: 'Random User',
+        email: 'Random@gmail.com',
+        password: '12345678', // Insecure, for prototype only
+        avatarId: 'new-user-male',
+        points: 0,
+        streak: 0,
+        achievements: [],
+        activityLog: [],
+        fitnessGoals: 'Get started with a new fitness plan.',
+        experienceLevel: 'Beginner',
+        workoutPlan: {
+            week: 1,
+            weeklyGoal: 'First week of your new personalized plan!',
+            schedule: [
+                 {
+                    day: 'Monday',
+                    title: 'Full Body Introduction',
+                    focus: 'Basic Movements',
+                    exercises: [
+                        { name: 'Bodyweight Squats', sets: '3', reps: '15', rest: '60s' },
+                        { name: 'Push-ups (on knees)', sets: '3', reps: '10', rest: '60s' },
+                        { name: 'Plank', sets: '3', reps: '30s', rest: '60s' },
+                    ],
+                },
+                {
+                    day: 'Wednesday',
+                    title: 'Light Cardio',
+                    focus: 'Heart Health',
+                    exercises: [
+                        { name: 'Brisk Walking', sets: '1', reps: '20 min', rest: 'N/A' },
+                        { name: 'Jumping Jacks', sets: '3', reps: '30s', rest: '60s' },
+                        { name: 'High Knees', sets: '3', reps: '30s', rest: '60s' },
+                    ],
+                },
+                {
+                    day: 'Friday',
+                    title: 'Flexibility and Core',
+                    focus: 'Stretching & Abs',
+                    exercises: [
+                        { name: 'Cat-Cow Stretch', sets: '2', reps: '10', rest: '30s' },
+                        { name: 'Bird-Dog', sets: '3', reps: '10 per side', rest: '45s' },
+                        { name: 'Glute Bridges', sets: '3', reps: '15', rest: '60s' },
+                    ],
+                },
+            ],
+            wellnessSuggestions: [
+                'Drink a glass of water first thing in the morning.',
+                'Try to stand up and stretch for 5 minutes every hour.',
+                'Read a book for 15 minutes before bed.',
+            ],
+        },
+    }
 ];
