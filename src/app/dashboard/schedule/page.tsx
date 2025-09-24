@@ -4,7 +4,7 @@
 import { useUser } from '@/context/user-context';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,6 @@ import {
 import { useState }
 from 'react';
 import { Calendar as CalendarPicker } from "@/components/ui/calendar";
-import { format } from 'date-fns';
 
 
 export default function SchedulePage() {
