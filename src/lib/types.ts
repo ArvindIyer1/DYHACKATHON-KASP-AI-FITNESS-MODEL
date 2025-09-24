@@ -14,7 +14,7 @@ export type User = {
 
 export type ActivityLog = {
   id: string;
-  date: string;
+  date: string; // YYYY-MM-DD
   activity: string;
   duration: number; // in minutes
   intensity: 'Low' | 'Medium' | 'High';

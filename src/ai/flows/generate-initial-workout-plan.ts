@@ -32,12 +32,23 @@ export type GenerateInitialWorkoutPlanInput = z.infer<
   typeof GenerateInitialWorkoutPlanInputSchema
 >;
 
-const GenerateInitialWorkoutPlanOutputSchema = z.object({
-  workoutPlan: z.string().describe('A detailed workout plan based on user input.'),
-  wellnessSuggestions: z
-    .string()
-    .describe('Wellness suggestions to complement the workout plan.'),
+const WorkoutDaySchema = z.object({
+  day: z.string().describe('Day of the week, e.g., Monday'),
+  title: z.string().describe('Title of the workout, e.g., Upper Body Strength'),
+  focus: z.string().describe('Main focus of the workout, e.g., Chest, Shoulders, Triceps'),
+  exercises: z.array(z.object({
+    name: z.string().describe('Name of the exercise'),
+    sets: z.string().describe('Number of sets'),
+    reps: z.string().describe('Number of repetitions or duration'),
+    rest: z.string().describe('Rest time between sets'),
+  })),
 });
+
+const GenerateInitialWorkoutPlanOutputSchema = z.object({
+  workoutPlan: z.array(WorkoutDaySchema).describe('A detailed 3-day workout plan based on user input.'),
+  wellnessSuggestions: z.array(z.string()).describe('Three wellness suggestions to complement the workout plan.'),
+});
+
 
 export type GenerateInitialWorkoutPlanOutput = z.infer<
   typeof GenerateInitialWorkoutPlanOutputSchema
@@ -53,7 +64,7 @@ const prompt = ai.definePrompt({
   name: 'generateInitialWorkoutPlanPrompt',
   input: {schema: GenerateInitialWorkoutPlanInputSchema},
   output: {schema: GenerateInitialWorkoutPlanOutputSchema},
-  prompt: `You are an AI wellness assistant that generates personalized workout and wellness plans for new users.
+  prompt: `You are an AI wellness assistant that generates personalized 3-day workout and wellness plans for new users. The plan should be structured for Monday, Wednesday, and Friday.
 
   Based on the user's input, create a workout plan and wellness suggestions.
 
@@ -63,8 +74,7 @@ const prompt = ai.definePrompt({
   Preferred Activities: {{{preferredActivities}}}
   Wellness Preferences: {{{wellnessPreferences}}}
 
-  Workout Plan:
-  Wellness Suggestions:
+  Generate a 3-day workout plan (Monday, Wednesday, Friday) and 3 wellness suggestions.
   `,
 });
 

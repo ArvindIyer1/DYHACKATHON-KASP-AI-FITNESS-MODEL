@@ -6,8 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, User as UserIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { PlusCircle } from 'lucide-react';
 
 export function UserSelection() {
   const { users, setCurrentUserById } = useUser();
@@ -33,9 +32,9 @@ export function UserSelection() {
           <button
             key={user.id}
             onClick={() => handleUserSelect(user.id)}
-            className="group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-lg"
+            className="group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
           >
-            <Card className="overflow-hidden transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-primary">
+            <Card className="overflow-hidden transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1 group-hover:border-primary bg-card">
               <CardContent className="p-0 flex flex-col items-center">
                 <div className="relative w-full aspect-square">
                   <Image
@@ -46,8 +45,9 @@ export function UserSelection() {
                     data-ai-hint="person portrait"
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 </div>
-                <p className="font-semibold text-lg py-3 w-full text-center bg-card">
+                <p className="font-semibold text-lg py-3 w-full text-center">
                   {user.name}
                 </p>
               </CardContent>
@@ -56,9 +56,9 @@ export function UserSelection() {
         ))}
         <button
           onClick={handleNewUser}
-          className="group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-lg"
+          className="group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg"
         >
-          <Card className="h-full border-dashed border-2 hover:border-solid hover:border-primary transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1">
+          <Card className="h-full border-dashed border-2 hover:border-solid hover:border-primary transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1 bg-card">
             <CardContent className="p-4 flex flex-col items-center justify-center h-full gap-2">
               <PlusCircle className="w-12 h-12 text-muted-foreground group-hover:text-primary transition-colors" />
               <p className="font-semibold text-lg text-muted-foreground group-hover:text-primary transition-colors">
