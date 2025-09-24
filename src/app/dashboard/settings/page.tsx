@@ -13,6 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { Settings, User, Heart, Smartphone, SunMoon, Bell } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function SettingsPage() {
   const { currentUser, updateCurrentUser, setCurrentUserById } = useUser();
@@ -20,8 +21,24 @@ export default function SettingsPage() {
   const { toast } = useToast();
   const router = useRouter();
 
+  useEffect(() => {
+    if (!currentUser) {
+      const timer = setTimeout(() => {
+          if (!currentUser) {
+            router.push('/login');
+          }
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [currentUser, router]);
+
+
   if (!currentUser) {
-    return null;
+    return (
+        <div className="flex items-center justify-center h-full">
+            <p>Loading user settings...</p>
+        </div>
+    );
   }
   
   const handleLogout = () => {
