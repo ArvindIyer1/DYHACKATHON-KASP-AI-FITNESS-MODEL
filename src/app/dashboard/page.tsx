@@ -9,6 +9,7 @@ import {
   Star,
 } from 'lucide-react';
 import { DashboardCard } from '@/components/dashboard/dashboard-card';
+import { Button } from '@/components/ui/button';
 
 export default function DashboardPage() {
   return (
@@ -51,20 +52,28 @@ export default function DashboardPage() {
           icon={Star}
         />
       </div>
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6">
         <DashboardCard
           title="AI Progress Summary"
           value=""
           footer="An AI-generated look at your recent progress."
           icon={Bot}
-          className="lg:col-span-1"
+          className="lg:col-span-2"
         >
-          <p className="text-sm text-muted-foreground mt-2">
-            You've shown great consistency this week, hitting all your strength
-            training goals. Your cardio endurance is steadily improving.
-            Consider adding a yoga session for flexibility.
-          </p>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+            <p className="text-sm text-muted-foreground mt-2 max-w-xl">
+              You've shown great consistency this week, hitting all your strength
+              training goals. Your cardio endurance is steadily improving.
+              Consider adding a yoga session for flexibility.
+            </p>
+            <Button>
+              <Bot className="mr-2 h-4 w-4" />
+              Ask AI Expert
+            </Button>
+          </div>
         </DashboardCard>
+      </div>
+      <div className="grid gap-6 lg:grid-cols-2">
         <DashboardCard
           title="Achievements"
           value=""
