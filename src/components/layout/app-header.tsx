@@ -44,10 +44,19 @@ export function AppHeader() {
      
       <div className="flex items-center gap-2">
         <ThemeToggle />
-        <Button variant="ghost" size="icon">
-          <Globe className="h-5 w-5" />
-          <span className="sr-only">Language</span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Globe className="h-5 w-5" />
+              <span className="sr-only">Language</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>English</DropdownMenuItem>
+            <DropdownMenuItem>Español</DropdownMenuItem>
+            <DropdownMenuItem>Français</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         {currentUser && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
