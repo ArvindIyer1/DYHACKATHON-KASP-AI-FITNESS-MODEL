@@ -30,6 +30,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import type { User } from "@/lib/types";
 import { generateInitialWorkoutPlan } from "@/ai/flows/generate-initial-workout-plan";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 
 const formSchema = z.object({
@@ -79,6 +81,12 @@ export function OnboardingForm() {
     setIsLoading(true);
     
     try {
+      // 1. Create user in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      const firebaseUser = userCredential.user;
+
+
+      // 2. Generate workout plan
       const planOutput = await generateInitialWorkoutPlan({
         fitnessGoals: values.fitnessGoals,
         experienceLevel: values.experienceLevel,
@@ -87,12 +95,11 @@ export function OnboardingForm() {
         wellnessPreferences: 'Meditation, stretching', // default value
       });
       
+      // 3. Create the app-specific user profile
       const newUser: User = {
-          id: values.email,
+          id: firebaseUser.uid, // Use Firebase UID as the ID
           name: values.name,
           email: values.email,
-          // Note: Storing password directly is insecure. This is for prototype purposes only.
-          password: values.password,
           avatarId: values.gender === 'female' ? 'new-user-female' : 'new-user-male',
           points: 0,
           streak: 0,
@@ -110,8 +117,11 @@ export function OnboardingForm() {
           }
       };
 
+      // 4. Save the new user profile to our mock data store
+      // In a real app, you would save this to Firestore under `users/{firebaseUser.uid}`
       addUser(newUser);
-      setCurrentUserById(newUser.id);
+      
+      // 5. The onAuthStateChanged listener in UserProvider will automatically log the user in.
       
       toast({
           title: "Welcome to Synergy Life!",
@@ -119,11 +129,11 @@ export function OnboardingForm() {
       });
 
       router.push('/dashboard');
-    } catch(error) {
-      console.error("Failed to generate workout plan:", error);
+    } catch(error: any) {
+      console.error("Failed to sign up:", error);
       toast({
-        title: "Error",
-        description: "Could not create your plan. Please try again.",
+        title: "Sign-up Error",
+        description: error.message || "Could not create your account. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -260,7 +270,7 @@ export function OnboardingForm() {
             name="availableTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Time Available per Week</FormLabel>
+                <FormLabel>Time Available per Week</Label>
                 <FormControl>
                   <Input placeholder="e.g., '3-4 hours', '45 minutes daily'" {...field} />
                 </FormControl>

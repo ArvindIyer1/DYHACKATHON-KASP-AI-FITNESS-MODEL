@@ -7,19 +7,20 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Award, Flame, Star, Target, Dumbbell, Loader2 } from 'lucide-react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function ProfilePage() {
-  const { currentUser } = useUser();
+  const { currentUser, loading } = useUser();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!currentUser) {
-  //     redirect('/');
-  //   }
-  // }, [currentUser]);
+  useEffect(() => {
+    if (!loading && !currentUser) {
+      router.push('/login');
+    }
+  }, [currentUser, loading, router]);
 
-  if (!currentUser) {
+  if (loading || !currentUser) {
     return (
         <div className="flex h-96 items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />

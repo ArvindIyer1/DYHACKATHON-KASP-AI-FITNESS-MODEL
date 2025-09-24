@@ -17,11 +17,14 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useUser, UserProvider } from "@/context/user-context";
+import { UserProvider, useUser } from "@/context/user-context";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { AppLogo } from "@/components/app-logo";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email." }),
@@ -42,26 +45,29 @@ function LoginPageContent() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    const user = users.find(u => u.email === values.email);
-
-    // NOTE: This is a mock authentication. In a real app, you'd verify a hashed password.
-    if (user) {
-      setCurrentUserById(user.id);
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+      const user = userCredential.user;
+      
+      // The onAuthStateChanged listener in UserProvider will handle setting the user context
       toast({
         title: "Login Successful",
-        description: `Welcome back, ${user.name}!`,
+        description: `Welcome back!`,
       });
       router.push('/dashboard');
-    } else {
+
+    } catch (error: any) {
+      console.error("Login failed:", error);
       toast({
         title: "Login Failed",
-        description: "No user found with that email. Please sign up.",
+        description: error.message || "An unexpected error occurred.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }
 
   return (

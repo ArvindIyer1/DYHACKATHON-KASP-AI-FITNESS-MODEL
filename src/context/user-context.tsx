@@ -1,48 +1,79 @@
 "use client";
 
-import type { User } from "@/lib/types";
-import React, { createContext, useContext, useState, ReactNode, useCallback } from "react";
-import { users as initialUsers } from "@/lib/data";
+import type { User as AppUser } from "@/lib/types";
+import React, { createContext, useContext, useState, ReactNode, useCallback, useEffect } from "react";
+import { users as initialUsers, users } from "@/lib/data";
+import { auth } from "@/lib/firebase";
+import { onAuthStateChanged, User as FirebaseUser } from "firebase/auth";
+import { useRouter }from "next/navigation";
+
 
 interface UserContextType {
-  users: User[];
-  currentUser: User | null;
+  users: AppUser[];
+  currentUser: AppUser | null;
+  firebaseUser: FirebaseUser | null;
+  loading: boolean;
   setCurrentUserById: (id: string | null) => void;
-  addUser: (user: User) => void;
-  updateCurrentUser: (updatedData: Partial<User>) => void;
+  addUser: (user: AppUser) => void;
+  updateCurrentUser: (updatedData: Partial<AppUser>) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [users, setUsers] = useState<User[]>(initialUsers);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [userList, setUserList] = useState<AppUser[]>(initialUsers);
+  const [currentUser, setCurrentUser] = useState<AppUser | null>(null);
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setFirebaseUser(user);
+      if (user) {
+        // If there's a Firebase user, find the corresponding app user from our mock data.
+        // In a real app, you might fetch this from Firestore.
+        const appUser = userList.find(u => u.email === user.email);
+        setCurrentUser(appUser || null);
+      } else {
+        setCurrentUser(null);
+      }
+      setLoading(false);
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [userList]);
 
   const setCurrentUserById = useCallback((id: string | null) => {
     if (id === null) {
+      auth.signOut();
       setCurrentUser(null);
+      setFirebaseUser(null);
+      router.push('/login');
       return;
     }
-    const user = users.find(u => u.id === id) || null;
+    const user = userList.find(u => u.id === id) || null;
     setCurrentUser(user);
-  }, [users]);
+  }, [userList, router]);
 
-  const addUser = (user: User) => {
-    setUsers(prevUsers => [...prevUsers, user]);
+  const addUser = (user: AppUser) => {
+    setUserList(prevUsers => [...prevUsers, user]);
   };
   
-  const updateCurrentUser = (updatedData: Partial<User>) => {
+  const updateCurrentUser = (updatedData: Partial<AppUser>) => {
     if (!currentUser) return;
     
     const updatedUser = { ...currentUser, ...updatedData };
     
     setCurrentUser(updatedUser);
-    setUsers(prevUsers => prevUsers.map(u => u.id === updatedUser.id ? updatedUser : u));
+    setUserList(prevUsers => prevUsers.map(u => u.id === updatedUser.id ? updatedUser : u));
   };
 
 
   return (
-    <UserContext.Provider value={{ users, currentUser, setCurrentUserById, addUser, updateCurrentUser }}>
+    <UserContext.Provider value={{ users: userList, currentUser, firebaseUser, loading, setCurrentUserById, addUser, updateCurrentUser }}>
       {children}
     </UserContext.Provider>
   );

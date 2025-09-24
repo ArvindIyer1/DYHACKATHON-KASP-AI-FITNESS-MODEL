@@ -17,24 +17,19 @@ import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 
 export default function SettingsPage() {
-  const { currentUser, setCurrentUserById } = useUser();
+  const { currentUser, loading, setCurrentUserById } = useUser();
   const { setTheme, theme } = useTheme();
   const { toast } = useToast();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   // If after a short delay there is still no user, then redirect.
-  //   // This prevents a flash of the settings page before redirecting.
-  //   const timer = setTimeout(() => {
-  //     if (!currentUser) {
-  //       router.push('/login');
-  //     }
-  //   }, 500);
+  useEffect(() => {
+    if (!loading && !currentUser) {
+      router.push('/login');
+    }
+  }, [currentUser, loading, router]);
 
-  //   return () => clearTimeout(timer);
-  // }, [currentUser, router]);
 
-  if (!currentUser) {
+  if (loading || !currentUser) {
     return (
         <div className="flex h-96 items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -44,7 +39,6 @@ export default function SettingsPage() {
   
   const handleLogout = () => {
     setCurrentUserById(null);
-    router.push('/');
   };
 
   const handleSaveChanges = (e: React.FormEvent) => {

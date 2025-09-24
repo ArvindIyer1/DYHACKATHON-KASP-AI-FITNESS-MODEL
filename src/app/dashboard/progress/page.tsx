@@ -5,7 +5,7 @@ import { useUser } from '@/context/user-context';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Award, Flame, Star, TrendingUp, History, Dumbbell, Bike, Heart, Loader2 } from 'lucide-react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
@@ -23,15 +23,17 @@ const wellnessProgressData = [
 ];
 
 export default function ProgressPage() {
-  const { currentUser } = useUser();
+  const { currentUser, loading } = useUser();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!currentUser) {
-  //     redirect('/');
-  //   }
-  // }, [currentUser]);
 
-  if (!currentUser) {
+  useEffect(() => {
+    if (!loading && !currentUser) {
+      router.push('/login');
+    }
+  }, [currentUser, loading, router]);
+
+  if (loading || !currentUser) {
     return (
         <div className="flex h-96 items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
