@@ -1,3 +1,4 @@
+
 import {
   Activity,
   Award,
@@ -10,6 +11,17 @@ import {
 } from 'lucide-react';
 import { DashboardCard } from '@/components/dashboard/dashboard-card';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
 export default function DashboardPage() {
   return (
@@ -66,10 +78,31 @@ export default function DashboardPage() {
               training goals. Your cardio endurance is steadily improving.
               Consider adding a yoga session for flexibility.
             </p>
-            <Button>
-              <Bot className="mr-2 h-4 w-4" />
-              Ask AI Expert
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>
+                  <Bot className="mr-2 h-4 w-4" />
+                  Ask AI Expert
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Ask AI Expert</DialogTitle>
+                  <DialogDescription>
+                    Have a question about your workout, nutrition, or wellness? Ask our AI expert for personalized advice.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid w-full gap-1.5">
+                    <Label htmlFor="question">Your Question</Label>
+                    <Textarea placeholder="e.g., How can I improve my bench press?" id="question" />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit">Ask Question</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </DashboardCard>
       </div>
