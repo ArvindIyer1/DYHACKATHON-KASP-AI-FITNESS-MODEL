@@ -4,7 +4,7 @@
 import { useUser } from '@/context/user-context';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Award, Flame, Star, TrendingUp, BarChart, History, Dumbbell, Run, Bike, Heart } from 'lucide-react';
+import { Award, Flame, Star, TrendingUp, BarChart, History, Dumbbell, Bike, Heart } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
 import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
@@ -36,7 +36,7 @@ export default function ProgressPage() {
 
   const getActivityIcon = (activity: string) => {
     const lowerCaseActivity = activity.toLowerCase();
-    if (lowerCaseActivity.includes('run')) return <Run className="w-5 h-5" />;
+    if (lowerCaseActivity.includes('run')) return <TrendingUp className="w-5 h-5" />;
     if (lowerCaseActivity.includes('lift') || lowerCaseActivity.includes('weight')) return <Dumbbell className="w-5 h-5" />;
     if (lowerCaseActivity.includes('cycl') || lowerCaseActivity.includes('bike')) return <Bike className="w-5 h-5" />;
     return <Heart className="w-5 h-5" />;
@@ -167,5 +167,3 @@ export default function ProgressPage() {
     </div>
   );
 }
-
-    
