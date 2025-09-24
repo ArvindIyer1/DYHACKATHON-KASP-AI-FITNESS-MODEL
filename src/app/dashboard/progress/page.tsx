@@ -4,10 +4,10 @@
 import { useUser } from '@/context/user-context';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Award, Flame, Star, Target, Dumbbell, TrendingUp } from 'lucide-react';
+import { Award, Flame, Star, TrendingUp, BarChart } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 
 export default function ProgressPage() {
@@ -73,7 +73,7 @@ export default function ProgressPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2"><BarChart3 className="w-5 h-5" /> Activity This Week</CardTitle>
+          <CardTitle className="flex items-center gap-2"><BarChart className="w-5 h-5" /> Activity This Week</CardTitle>
           <CardDescription>Minutes of activity logged in the last 7 days.</CardDescription>
         </CardHeader>
         <CardContent className="h-80">
@@ -84,7 +84,7 @@ export default function ProgressPage() {
                   color: 'hsl(var(--primary))',
                 },
             }}>
-                <BarChart data={chartData} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
+                <RechartsBarChart data={chartData} margin={{ top: 20, right: 20, left: -10, bottom: 0 }}>
                     <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} />
                     <YAxis tickLine={false} axisLine={false} tickMargin={8} />
                     <Tooltip 
@@ -92,7 +92,7 @@ export default function ProgressPage() {
                         content={<ChartTooltipContent indicator="dot" />}
                     />
                     <Bar dataKey="duration" fill="var(--color-duration)" radius={8} />
-                </BarChart>
+                </RechartsBarChart>
             </ChartContainer>
           </ResponsiveContainer>
         </CardContent>
