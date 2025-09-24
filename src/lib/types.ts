@@ -1,8 +1,10 @@
+
 export type User = {
   id: string;
   name: string;
   avatarId: string;
   email: string;
+  password?: string; // Insecure, for prototype only
   points: number;
   streak: number;
   achievements: string[];

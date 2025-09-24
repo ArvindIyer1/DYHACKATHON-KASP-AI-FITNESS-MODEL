@@ -35,6 +35,7 @@ import { generateInitialWorkoutPlan } from "@/ai/flows/generate-initial-workout-
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email." }),
+  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
   fitnessGoals: z.string().min(10, { message: "Please describe your goals in at least 10 characters." }),
   experienceLevel: z.enum(['Beginner', 'Intermediate', 'Advanced']),
   preferredActivities: z.string().min(3, { message: "List at least one activity."}),
@@ -56,6 +57,7 @@ export function OnboardingForm() {
     defaultValues: {
       name: "",
       email: "",
+      password: "",
       fitnessGoals: "",
       experienceLevel: "Beginner",
       preferredActivities: "",
@@ -83,15 +85,14 @@ export function OnboardingForm() {
         availableTime: values.availableTime,
         preferredActivities: values.preferredActivities,
         wellnessPreferences: 'Meditation, stretching', // default value
-        gender: values.gender,
-        height: values.height.toString(),
-        weight: values.weight.toString(),
       });
       
       const newUser: User = {
           id: values.email,
           name: values.name,
           email: values.email,
+          // Note: Storing password directly is insecure. This is for prototype purposes only.
+          password: values.password,
           avatarId: values.gender === 'female' ? 'new-user-female' : 'new-user-male',
           points: 0,
           streak: 0,
@@ -114,7 +115,7 @@ export function OnboardingForm() {
       
       toast({
           title: "Welcome to Synergy Life!",
-          description: "Your personalized plan is ready. Let's get started.",
+          description: "Your account has been created and your plan is ready.",
       });
 
       router.push('/dashboard');
@@ -153,8 +154,24 @@ export function OnboardingForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="alex@example.com" {...field} />
+                  <Input type="email" placeholder="alex@example.com" {...field} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+           <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="••••••••" {...field} />
+                </FormControl>
+                <FormDescription>
+                  Must be at least 8 characters long.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -253,7 +270,7 @@ export function OnboardingForm() {
           />
           
           <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base font-semibold py-6" disabled={isLoading}>
-            {isLoading ? <Loader2 className="animate-spin" /> : "Create My Plan"}
+            {isLoading ? <Loader2 className="animate-spin" /> : "Create My Account & Plan"}
           </Button>
         </form>
       </Form>

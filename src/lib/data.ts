@@ -6,6 +6,7 @@ export const users: User[] = [
         id: 'alex@example.com',
         name: 'Alex Ray',
         email: 'alex@example.com',
+        password: 'password123', // Insecure, for prototype only
         avatarId: 'user-alex',
         points: 1250,
         streak: 12,
@@ -67,6 +68,7 @@ export const users: User[] = [
         id: 'jordan@example.com',
         name: 'Jordan Lee',
         email: 'jordan@example.com',
+        password: 'password123', // Insecure, for prototype only
         avatarId: 'user-jordan',
         points: 800,
         streak: 5,
@@ -123,6 +125,7 @@ export const users: User[] = [
         id: 'casey@example.com',
         name: 'Casey Pat',
         email: 'casey@example.com',
+        password: 'password123', // Insecure, for prototype only
         avatarId: 'user-casey',
         points: 2500,
         streak: 32,

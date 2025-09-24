@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -5,7 +6,6 @@ import { AppLogo } from '@/components/app-logo';
 import { UserProvider } from '@/context/user-context';
 import { Dumbbell, Utensils, HeartPulse, Menu, Globe, Instagram, Linkedin, Facebook } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { UserSelection } from '@/components/user-selection';
 import { ThemeToggle } from '@/components/theme-toggle';
 import {
   DropdownMenu,
