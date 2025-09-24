@@ -26,6 +26,7 @@ import {
   Calendar,
   BarChart3,
   MessageSquareQuote,
+  Video,
 } from 'lucide-react';
 
 const coreMenuItems = [
@@ -33,6 +34,7 @@ const coreMenuItems = [
   { href: '/dashboard/schedule', label: 'Schedule', icon: Calendar },
   { href: '/dashboard/progress', label: 'Progress', icon: BarChart3 },
   { href: '/dashboard/log', label: 'Log Activity', icon: PlusCircle },
+  { href: '/dashboard/track', label: 'Track Form', icon: Video },
 ];
 
 const userMenuItems = [

@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import {
@@ -10,6 +11,7 @@ import {
   Bot,
   Dumbbell,
   Star,
+  Video,
 } from 'lucide-react';
 import { DashboardCard } from '@/components/dashboard/dashboard-card';
 import { Button } from '@/components/ui/button';
@@ -17,6 +19,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { Progress } from '@/components/ui/progress';
+import Link from 'next/link';
 
 export default function DashboardPage() {
   const [aiQuestion, setAiQuestion] = useState('');
@@ -98,6 +101,21 @@ export default function DashboardPage() {
         </DashboardCard>
       </div>
       <div className="grid gap-6 lg:grid-cols-2">
+        <DashboardCard
+            title="Track Your Form"
+            value=""
+            footer="Get AI feedback on your exercise technique."
+            icon={Video}
+          >
+            <div className="flex h-full flex-col items-start justify-center">
+              <p className="text-sm text-muted-foreground mb-4">
+                Upload a video of your workout to get personalized tips for improvement.
+              </p>
+              <Button asChild>
+                <Link href="/dashboard/track">Upload Video</Link>
+              </Button>
+            </div>
+        </DashboardCard>
         <DashboardCard
           title="Achievements"
           value=""
