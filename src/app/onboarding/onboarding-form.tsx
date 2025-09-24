@@ -58,7 +58,7 @@ export function OnboardingForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      email: "",
+      email: "Random@gmail.com",
       password: "",
       fitnessGoals: "",
       experienceLevel: "Beginner",
@@ -270,7 +270,7 @@ export function OnboardingForm() {
             name="availableTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Time Available per Week</Label>
+                <FormLabel>Time Available per Week</FormLabel>
                 <FormControl>
                   <Input placeholder="e.g., '3-4 hours', '45 minutes daily'" {...field} />
                 </FormControl>
@@ -286,3 +286,5 @@ export function OnboardingForm() {
       </Form>
   );
 }
+
+    
