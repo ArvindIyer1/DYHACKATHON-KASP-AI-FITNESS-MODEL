@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { AppLogo } from '@/components/app-logo';
 import { UserProvider } from '@/context/user-context';
-import { Dumbbell, Utensils, HeartPulse, Menu, Globe, Instagram, Linkedin, Facebook, Twitter } from 'lucide-react';
+import { Dumbbell, HeartPulse, Menu, Globe, Instagram, Linkedin, Facebook, Twitter, Star } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/theme-toggle';
 import {
@@ -40,7 +40,7 @@ const chooseUsItems = [
     description: 'We focus on more than just workouts, with suggestions for rest, mindfulness, and nutrition.',
   },
   {
-    icon: Utensils,
+    icon: Star,
     title: 'Gamified Motivation',
     description: 'Stay engaged with points, streaks, and achievements that make your fitness journey fun.',
   },
