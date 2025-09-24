@@ -47,6 +47,27 @@ function LoginPageContent() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
+    // DEMO: Bypass Firebase for the random user
+    if (values.email === 'Random@gmail.com' && values.password === '12345678') {
+      const demoUser = users.find(u => u.email === 'Random@gmail.com');
+      if (demoUser) {
+        setCurrentUserById(demoUser.id);
+        toast({
+          title: "Login Successful",
+          description: `Welcome back, ${demoUser.name}!`,
+        });
+        router.push('/dashboard');
+      } else {
+         toast({
+          title: "Login Failed",
+          description: "Demo user not found.",
+          variant: "destructive",
+        });
+      }
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
       const user = userCredential.user;
