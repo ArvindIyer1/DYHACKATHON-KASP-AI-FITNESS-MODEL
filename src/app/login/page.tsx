@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useUser } from "@/context/user-context";
+import { useUser, UserProvider } from "@/context/user-context";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -28,7 +28,7 @@ const formSchema = z.object({
   password: z.string().min(1, { message: "Password is required." }),
 });
 
-export default function LoginPage() {
+function LoginPageContent() {
   const [isLoading, setIsLoading] = useState(false);
   const { users, setCurrentUserById } = useUser();
   const router = useRouter();
@@ -129,4 +129,12 @@ export default function LoginPage() {
       </div>
     </div>
   );
+}
+
+export default function LoginPage() {
+    return (
+        <UserProvider>
+            <LoginPageContent />
+        </UserProvider>
+    )
 }
