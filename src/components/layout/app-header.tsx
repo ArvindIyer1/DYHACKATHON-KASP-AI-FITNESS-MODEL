@@ -55,8 +55,8 @@ export function AppHeader() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>English</DropdownMenuItem>
-            <DropdownMenuItem>Hindi</DropdownMenuItem>
-            <DropdownMenuItem>Marathi</DropdownMenuItem>
+            <DropdownMenuItem>हिन्दी</DropdownMenuItem>
+            <DropdownMenuItem>मराठी</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         {currentUser && (
