@@ -160,6 +160,64 @@ export default function ProgressPage() {
         </Card>
       </div>
       
+      {/* Yoga & Flexibility Highlight Section */}
+      <Card className="overflow-hidden">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 z-10" />
+          <img 
+            src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+            alt="Peaceful yoga meditation pose"
+            className="h-48 w-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/30 z-20" />
+          <div className="absolute inset-0 flex items-center justify-center z-30">
+            <div className="text-center text-white">
+              <h3 className="text-2xl font-bold mb-2">🧘‍♀️ Yoga & Flexibility</h3>
+              <p className="text-sm opacity-90">Find your inner peace and improve flexibility</p>
+              {currentUser.activityLog.filter(log => 
+                log.activity.toLowerCase().includes('yoga') || 
+                log.activity.toLowerCase().includes('stretch')
+              ).length > 0 && (
+                <Badge className="mt-2 bg-white/20 text-white border-white/30">
+                  {currentUser.activityLog.filter(log => 
+                    log.activity.toLowerCase().includes('yoga') || 
+                    log.activity.toLowerCase().includes('stretch')
+                  ).length} yoga sessions completed
+                </Badge>
+              )}
+            </div>
+          </div>
+        </div>
+        <CardContent className="pt-4">
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p className="text-2xl font-bold text-purple-600">
+                {currentUser.activityLog
+                  .filter(log => log.activity.toLowerCase().includes('yoga'))
+                  .reduce((sum, log) => sum + log.duration, 0)}
+              </p>
+              <p className="text-xs text-muted-foreground">Minutes of Yoga</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-pink-600">
+                {currentUser.activityLog
+                  .filter(log => log.activity.toLowerCase().includes('stretch') || log.activity.toLowerCase().includes('flexibility'))
+                  .length}
+              </p>
+              <p className="text-xs text-muted-foreground">Flexibility Sessions</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-indigo-600">
+                {Math.round((currentUser.activityLog
+                  .filter(log => log.activity.toLowerCase().includes('yoga') || log.activity.toLowerCase().includes('stretch'))
+                  .reduce((sum, log) => sum + log.duration, 0) / 60) * 10) / 10}
+              </p>
+              <p className="text-xs text-muted-foreground">Hours of Practice</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2"><Award className="w-5 h-5" /> Achievements</CardTitle>

@@ -192,6 +192,20 @@ function LoginPageContent() {
               Sign up
             </Link>
           </div>
+          
+          {/* Support Section */}
+          <div className="mt-6 p-4 bg-muted/30 rounded-lg border text-center">
+            <p className="text-sm font-medium mb-2">Need Help? We're Here 24/7</p>
+            <div className="flex flex-col sm:flex-row gap-2 items-center justify-center text-xs text-muted-foreground">
+              <div className="flex items-center gap-1">
+                📞 <span className="font-medium">1-800-FIT-KASP</span>
+              </div>
+              <div className="hidden sm:block">•</div>
+              <div className="flex items-center gap-1">
+                📧 <span>support@kaspfitness.com</span>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
   );

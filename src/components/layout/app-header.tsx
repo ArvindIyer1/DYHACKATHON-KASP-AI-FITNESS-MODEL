@@ -40,6 +40,9 @@ export function AppHeader() {
       </div>
      
       <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full text-xs font-medium text-primary">
+          📞 Support: 1-800-FIT-KASP
+        </div>
         <Button variant="ghost" size="icon">
           <Search className="h-5 w-5" />
         </Button>

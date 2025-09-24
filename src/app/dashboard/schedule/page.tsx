@@ -83,6 +83,43 @@ export default function SchedulePage() {
                 <p className="text-muted-foreground">Your weekly events, workouts, and todos all in one place</p>
             </div>
 
+            {/* Featured Yoga Section */}
+            <Card className="overflow-hidden bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-indigo-500/10 border-purple-200/20">
+                <div className="flex flex-col md:flex-row">
+                    <div className="md:w-1/3">
+                        <img 
+                            src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                            alt="Peaceful yoga meditation pose"
+                            className="h-48 md:h-full w-full object-cover object-center"
+                        />
+                    </div>
+                    <div className="md:w-2/3 p-6 flex flex-col justify-center">
+                        <div className="flex items-center gap-2 mb-2">
+                            <Target className="h-5 w-5 text-purple-600" />
+                            <h3 className="text-xl font-semibold">🧘‍♀️ Daily Yoga & Mindfulness</h3>
+                        </div>
+                        <p className="text-muted-foreground mb-4">
+                            Start your day with serenity. Join our guided yoga sessions for improved flexibility, 
+                            strength, and mental clarity. Perfect your form and find your inner peace.
+                        </p>
+                        <div className="flex gap-4 text-sm">
+                            <div className="flex items-center gap-1">
+                                <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                <span>Today 8:00 AM</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <span className="w-2 h-2 bg-pink-500 rounded-full"></span>
+                                <span>45 min session</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <span className="w-2 h-2 bg-indigo-500 rounded-full"></span>
+                                <span>All levels welcome</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Card>
+
             {/* Calendar Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Calendar Widget */}

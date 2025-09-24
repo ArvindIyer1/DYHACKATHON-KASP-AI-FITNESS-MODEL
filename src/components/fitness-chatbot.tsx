@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 
 const MOCK_API = "https://jsonplaceholder.typicode.com";
-const EXTERNAL_CHATBOT_URL = process.env.NEXT_PUBLIC_EXTERNAL_CHATBOT_URL || "http://192.168.1.25:5678/webhook/chat";
+const EXTERNAL_CHATBOT_URL = process.env.NEXT_PUBLIC_EXTERNAL_CHATBOT_URL || "https://tysrs6ck2exayzohs-jgzegxb.hooks.n8n.cloud/";
 const ENABLE_EXTERNAL_CHATBOT = process.env.NEXT_PUBLIC_ENABLE_EXTERNAL_CHATBOT === "true";
 
 interface ChatMessage {
@@ -219,23 +219,22 @@ export function FitnessChatbot() {
   // Call external chatbot API
   const callExternalChatbot = async (message: string): Promise<string | null> => {
     try {
-      const response = await axios.post(EXTERNAL_CHATBOT_URL, {
-        message: message,
-        user: {
-          name: currentUser?.name || "User",
-          points: currentUser?.points || 0,
-          streak: currentUser?.streak || 0,
-          level: currentUser?.experienceLevel || "Beginner"
-        },
-        context: "fitness_coaching"
-      }, {
-        timeout: 10000, // 10 second timeout
+      const response = await fetch('https://tysrs6ck2exayzohs-jgzegxb.hooks.n8n.cloud/webhook-test/d94a219f-6b7c-4788-b9b9-90c98160b957', {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: message  // your chat message
+        })
       });
       
-      return response.data.response || response.data.message || response.data.text || "I'm here to help with your fitness journey!";
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data.response || data.message || data.text || "I'm here to help with your fitness journey!";
     } catch (error) {
       console.warn("External chatbot unavailable, falling back to local responses:", error);
       return null; // Will trigger fallback

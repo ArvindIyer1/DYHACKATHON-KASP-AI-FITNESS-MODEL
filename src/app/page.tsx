@@ -56,20 +56,20 @@ const classes = [
    {
     id: "class-2",
     name: "Yoga & Flexibility",
-    imgUrl: "https://picsum.photos/seed/yoga-class/600/800",
-    imgHint: "yoga class"
+    imgUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2020&q=80",
+    imgHint: "peaceful yoga meditation pose"
   },
    {
     id: "class-3",
     name: "Cardio Endurance",
-    imgUrl: "https://picsum.photos/seed/running-person/600/800",
-    imgHint: "running"
+    imgUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    imgHint: "running outdoors for cardio fitness"
   },
    {
     id: "class-4",
     name: "Wellness & Recovery",
-    imgUrl: "https://picsum.photos/seed/stretching-meditation/600/800",
-    imgHint: "meditation"
+    imgUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    imgHint: "woman in peaceful meditation and wellness recovery"
   },
 ];
 

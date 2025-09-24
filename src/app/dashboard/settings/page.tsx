@@ -252,6 +252,44 @@ export default function SettingsPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Support & Contact */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Heart className="w-5 h-5" /> Support & Contact
+            </CardTitle>
+            <CardDescription>Need help? We're here for you 24/7</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="rounded-lg border p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium">📞 Toll-Free Support</p>
+                  <p className="text-lg font-bold text-primary">1-800-FIT-KASP</p>
+                  <p className="text-sm text-muted-foreground">(1-800-348-5277)</p>
+                </div>
+              </div>
+              <div className="text-xs text-muted-foreground">
+                Available 24/7 • Free from anywhere in the US & Canada
+              </div>
+            </div>
+            
+            <div className="rounded-lg border p-4 space-y-2">
+              <p className="text-sm font-medium">💬 Live Chat Support</p>
+              <p className="text-sm text-muted-foreground">Get instant help from our AI coaches</p>
+              <Button variant="outline" size="sm" className="w-full">
+                Start Chat
+              </Button>
+            </div>
+
+            <div className="rounded-lg border p-4 space-y-2">
+              <p className="text-sm font-medium">📧 Email Support</p>
+              <p className="text-sm text-muted-foreground">support@kaspfitness.com</p>
+              <p className="text-xs text-muted-foreground">Response within 24 hours</p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
